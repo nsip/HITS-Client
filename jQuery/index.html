@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>SIF REST TEST</title>
+</head>
+<body>
+
+	<h1>Starting REST</h1>
+	<p>Please note. You would not normally do authentication in Javascript.
+This is purely to demo the actual REST interface in another language.</p>
+
+
+	<div id="log">
+		the log.
+	</div>
+
+<script src="jquery.js"></script>
+<script src="jquery.rest.js"></script>
+<script>
+console.log("Loaded...");
+
+var api = new $.RestClient('/', {
+	stripTrailingSlash: true,
+});
+
+api.add('environments');
+api.add('alerts');
+api.add('students');
+
+api.students.read().done(function(data) {
+	console.log(data);
+	$('#log').append("<p>Loaded studentss</p>");
+});
+
+students_id = 'ABC-123';
+
+api.students.read(students_id).done(function(data) {
+	console.log(data);
+	$('#log').append("<p>Found a students name = " + data.name.first + "</p>");
+});
+
+var free_id = 1;
+var first_id = 0;
+api.students.action.read(students_id).done(function(data) {
+	console.log(data);
+	$('#log').append("<p>Actions...</p><ul>");
+	for (var i = 0; i < data.length; i++) {
+		$('#log').append("<li>" + data[i].action_id + ": " + data[i].action_title + "</li>");
+		if (data[i].action_id == free_id) 
+			free_id++;
+		if (first_id == 0) 
+			first_id = data[i].action_id;
+	}
+	$('#log').append("</ul>");
+
+	// These need fields free - so wait until data above before firing
+	api.students.action.create(students_id, { action_id: free_id }).done(function(data) {;
+		$('#log').append("<p>Added new ID = " + free_id + "</p>");
+	});
+
+	api.students.action.del(students_id, first_id).done(function(data) {
+		$('#log').append("<p>Deleted ID = " + first_id + "</p>");
+	});
+
+});
+
+</script>
+
+</body>
+</html>

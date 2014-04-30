@@ -1,0 +1,3 @@
+
+http://nsipmd.dd.com.au/sifrest2/?deviceType=Tablet
+http://nsipmd.dd.com.au/sifrest2/?deviceType=Phone

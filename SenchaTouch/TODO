@@ -1,0 +1,31 @@
+* Phone/Tablet view:
+	- Kitchen sink style
+* # URLs
+
+
+
+View / Examples
+	- View JSON
+	- View XML
+	- View AJAX Javascript
+	- View Template Javascript
+
+
+
+NAVІGATION
+	- Top level fixed list: push 'nav' or 'view' (nav = view if Phone)
+		- SchoolList - AJAX list of schools
+		- Browse = Fixed list of Object types
+			- BrowseList = AJAX loaded list of Object IDs
+				- BrowseView = XML/JSON Viewer
+
+	
+		
+
+Store URL Change
+	store = Ext.StoreMgr.get('YourStore');
+	store.setProxy({
+		type: 'ajax',
+		url: 'http://www.yoururl.com?foo=bar',
+	});
+
