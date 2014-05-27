@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HITS SIF Client</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/hits.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+      </div>
+      <div class="col-xs-5">
+        <div class="row">
+          <h3>Input</h3>
+        </div>
+        <div class="row">
+          <div class="bs-example">
+            <form role="form">
+              <div class="form-group">
+                <label for="zoneId">School Reference Id</label>
+                <input type="text" class="form-control" id="zoneId" placeholder="Enter School Reference Id" value="DC56C532026B11E3A5325DE06940ABA3">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="password" placeholder="Enter Password" value="hits@nsip">
+              </div>
+              <div class="form-group">
+                <label for="sessionToken">Session Token</label>
+                <input type="text" class="form-control" id="sessionToken" placeholder="Leave empty to create environment">
+              </div>
+              <div class="form-group">
+                <label style="text-align:center; width:100%;">&nbsp;</label>
+              </div>
+              <div class="form-group">
+                <label for="provider">SIF Provider</label>
+                <select class="form-control" id="provider"></select>
+              </div>
+              <div class="form-group">
+                <label for="method">Method</label>
+                <select class="form-control" id="method"></select>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row parameter-header" style="display:none;">
+          <h3>Parameters</h3>
+        </div>
+        <div class="row parameter-block" id="getOne" style="display:none;">
+          <div class="bs-example">
+            <form role="form">
+              <div class="form-group">
+                <label for="getOneReferenceId">Reference Id</label>
+                <input type="text" class="form-control" id="getOneReferenceId" placeholder="Reference Id">
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row parameter-block" id="getMany" style="display:none;">
+          <div class="bs-example">
+            <form role="form">
+              <div class="form-group">
+                <label for="getManyRecordsPerPage">Records per Page</label>
+                <input type="text" class="form-control" id="getManyRecordsPerPage" placeholder="Records per Page" value=5>
+              </div>
+              <div class="form-group">
+                <label for="getManyPage">Page Number</label>
+                <input type="text" class="form-control" id="getManyPage" placeholder="Page Number" value=1>
+              </div>
+            </form>
+          </div>
+        </div>        
+        <div class="row">
+          &nbsp;  
+        </div>
+        <div class="col-xs-12 text-center">
+          <button type="button" class="btn btn-primary" id="execute">Execute</button>
+        </div>
+      </div>
+      <div class="col-xs-5 col-xs-offset-1">
+        <div class="row">
+          <h3>5. Response</h3>
+        </div>
+        <div class="row">
+          <pre id="response">
+          </pre>
+        </div>
+      </div>
+  </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/base64.js"></script>
+    <script src="js/siftemplate.js"></script>
+    <script src="js/hitsclient.js"></script>
+    <script>
+      $(document).ready(function() {
+        hitsclient.ready();
+      });
+    </script>
+  </body>
+</html>
