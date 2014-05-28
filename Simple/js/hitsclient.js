@@ -1,5 +1,6 @@
 var hitsclient = (function(_app) {
-  var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
+  // var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
+  var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
   // var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
   var providers = [
@@ -76,7 +77,7 @@ var hitsclient = (function(_app) {
     args.url = providerServer + "environments/environment";
     args.data = body.replace("${USER_TOKEN}",zoneId);
     args.dataType = "XML";
-    args.contentType = "text/xml";
+//    args.contentType = "application/xml";
     args.type = "POST";
     var token = "HITS:" + password;
     token = Base64.encode(token);
@@ -178,7 +179,7 @@ var hitsclient = (function(_app) {
     var args = {};
     args.callback = executeCallback;
     args.url = providerServer + "requests/" + provider.value + "/" + referenceId;
-    args.contentType = "text/xml";
+//    args.contentType = "application/xml";
     args.dataType = "XML";
     args.type = "GET";
     var token = sessionToken + ":" + password;
@@ -213,7 +214,7 @@ var hitsclient = (function(_app) {
     var args = {};
     args.callback = executeCallback;
     args.url = providerServer + "requests/" + provider.value + "?page=" + page + "&pageSize=" + recordsPerPage;
-    args.contentType = "text/xml";
+//    args.contentType = "application/xml";
     args.dataType = "XML";
     args.type = "GET";
     var token = sessionToken + ":" + password;
