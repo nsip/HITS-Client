@@ -228,6 +228,7 @@ var hitsclient = (function(_app) {
   var executeCallback = function(xhr, status, result, reason, args) {
     $(".container .row:first").html("");
     $("#response").text(xhr.responseText);
+    $('#responseURL').text(args.url);
   };
 
   var getFirstXmlTagContents = function(xmlDocument, xmlTag) {

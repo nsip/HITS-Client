@@ -92,6 +92,9 @@
         <div class="row">
           <h3>5. Response</h3>
         </div>
+	<div>
+		URL: <pre id="responseURL"></pre>
+	</div>
         <div class="row">
           <pre id="response">
           </pre>
@@ -104,10 +107,17 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/base64.js"></script>
     <script src="js/siftemplate.js"></script>
+    <script src="js/purl.js"></script>
     <script src="js/hitsclient.js"></script>
     <script>
       $(document).ready(function() {
         hitsclient.ready();
+
+	// Load School REF ID
+	var school_id = $.url().param('school_id');
+	if (school_id) {
+		$('#zoneId').val(school_id);	
+	}
       });
     </script>
   </body>
