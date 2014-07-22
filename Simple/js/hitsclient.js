@@ -184,6 +184,7 @@ var hitsclient = (function(_app) {
     args.type = "GET";
     var token = sessionToken + ":" + password;
     token = Base64.encode(token);
+    args.token = token;
     args.headers = {};
     args.headers["Content-Type"] = "application/xml";
     args.headers["Authorization"] = "Basic " + token;
@@ -219,6 +220,7 @@ var hitsclient = (function(_app) {
     args.type = "GET";
     var token = sessionToken + ":" + password;
     token = Base64.encode(token);
+    args.token = token;
     args.headers = {};
     args.headers["Content-Type"] = "application/xml";
     args.headers["Authorization"] = "Basic " + token;
@@ -228,7 +230,14 @@ var hitsclient = (function(_app) {
   var executeCallback = function(xhr, status, result, reason, args) {
     $(".container .row:first").html("");
     $("#response").text(xhr.responseText);
-    $('#responseURL').text(args.url);
+    if (args.url.indexOf("\?") > 0)  {
+        $('#responseURL').text(args.url + '&accessToken=' + args.token);
+        $('#responseURL').attr('href', args.url + '&accessToken=' + args.token);
+    }
+    else {
+        $('#responseURL').text(args.url + '?accessToken=' + args.token);
+        $('#responseURL').attr('href', args.url + '?accessToken=' + args.token);
+    }
   };
 
   var getFirstXmlTagContents = function(xmlDocument, xmlTag) {
