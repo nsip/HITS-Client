@@ -57,6 +57,16 @@
         <div class="row parameter-header" style="display:none;">
           <h3>Parameters</h3>
         </div>
+        <div class="row parameter-block" id="postOne" style="display:none;">
+          <div class="bs-example">
+            <form role="form">
+              <div class="form-group">
+                <label for="postOneBody">Body</label>
+                <textarea rows="10" type="text" class="form-control" id="postOneBody" placeholder="Body XML"></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
         <div class="row parameter-block" id="getOne" style="display:none;">
           <div class="bs-example">
             <form role="form">
@@ -94,6 +104,9 @@
         </div>
 	<div>
 		URL: <a href="#" id="responseURL"></a>
+	</div>
+	<div>
+		Status: <span id="responseStatus"></span>: <span id="responseStatusText"></span>
 	</div>
         <div class="row">
           <pre id="response">
