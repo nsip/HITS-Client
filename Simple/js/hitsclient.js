@@ -82,7 +82,7 @@ var hitsclient = (function(_app) {
 		},
 		{ 
 			name : "Staff Personal",
-			value : "StaffPersonals" 
+			value : "StaffPersonals",
 			xml: ''
 				+ '<StaffPersonal>' + "\n"
 				+ '<LocalId>946379881</LocalId>' + "\n"
@@ -107,7 +107,7 @@ var hitsclient = (function(_app) {
 		},
 		{ 
 			name : "Staff Assignment",
-			value : "StaffAssignments" 
+			value : "StaffAssignments",
 			xml: ''
 				+ '<StaffAssignment>' + "\n"
 				+ '<SchoolInfoRefId>A8C3D3E34B359D75101D00AA001A1652</SchoolInfoRefId>' + "\n"
@@ -152,7 +152,7 @@ var hitsclient = (function(_app) {
 		},
 		{ 
 			name : "Teaching Group",
-			value : "TeachingGroups" 
+			value : "TeachingGroups" ,
 			xml: ''
 				+ '<TeachingGroup>' + "\n"
 				+ '<SchoolYear>2008</SchoolYear>' + "\n"
@@ -220,7 +220,7 @@ var hitsclient = (function(_app) {
 
 		{
 			name: "Student School Enrollment",
-			value: "StudentSchoolEnrollments"
+			value: "StudentSchoolEnrollments",
 			xml: ''
 				+ '<StudentSchoolEnrollment>' + "\n"
 				+ '<StudentPersonalRefId>D3E34B359D75101A8C3D00AA001A1652</StudentPersonalRefId>' + "\n"
@@ -251,7 +251,7 @@ var hitsclient = (function(_app) {
 
 		{
 			name: "Room Info",
-			value: "RoomInfos"
+			value: "RoomInfos",
 			xml: ''
 				+ '<RoomInfo>' + "\n"
 				+ '<SchoolInfoRefId>A2E35B359D75101A8C3D00AA001A0000</SchoolInfoRefId>' + "\n"
@@ -291,7 +291,7 @@ var hitsclient = (function(_app) {
 
 		{
 			name: "Time Table",
-			value: "TimeTables"
+			value: "TimeTables",
 			xml: ''
 				+ '<TimeTable>' + "\n"
 				+ '<SchoolInfoRefId>F2256EE2B67F47D6AB4794D4DEE0D0AD</SchoolInfoRefId>' + "\n"
@@ -396,7 +396,7 @@ var hitsclient = (function(_app) {
 
 		{
 			name: "Scheduled Activity",
-			value: "ScheduledActivitys"
+			value: "ScheduledActivitys",
 			xml: ''
 				+ '<ScheduledActivity SchoolInfoRefId="B7A34E561C97345C0A4E11BB112B2753">' + "\n"
 				+ ' <TimeTableCellRefId>7345C0A4E1112B27531B2B7A34E561C9B</TimeTableCellRefId >' + "\n"
