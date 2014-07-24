@@ -51,7 +51,33 @@ var hitsclient = (function(_app) {
 		{ 
 			name : "Teaching Group",
 			value : "TeachingGroups" 
+		},
+
+		{
+			name: "Student School Enrollment",
+			value: "StudentSchoolEnrollments"
+		},
+
+		{
+			name: "Room Info",
+			value: "RoomInfos"
+		},
+
+		{
+			name: "Time Table Cell",
+			value: "TimeTableCells"
+		},
+
+		{
+			name: "Time Table",
+			value: "TimeTables"
+		},
+
+		{
+			name: "Scheduled Activity",
+			value: "ScheduledActivitys"
 		}
+
 		// XXX New objects & XML
 	];
 
