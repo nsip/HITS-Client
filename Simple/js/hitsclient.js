@@ -691,7 +691,7 @@ var hitsclient = (function(_app) {
 
 		var args = {};
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "?page=" + page + "&pageSize=" + recordsPerPage;
+		args.url = providerServer + "requests/" + provider.value + "?navigationPage=" + page + "&navigationPageSize=" + recordsPerPage;
 	//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "GET";
