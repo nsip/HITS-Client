@@ -18,8 +18,8 @@ BUGS / TASKS
 
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
-	var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
-	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
+	// var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
+	var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	// XXX Move this to separate file, to allow re-use of Infrastructure code with different Data sets / examples
 	var providers = [
@@ -509,17 +509,17 @@ var hitsclient = (function(_app) {
 		$(".container .row:first").html(div);
 	};
 
-	var getSessionToken = function(zoneId, password) {
-		var body = siftemplate.environment.create;
-
+	var getSessionToken = function(solutionId, applicationKey, userToken, password) {
+		var body = siftemplate.environment.getDetailed(solutionId, applicationKey, userToken);
+    console.log(body);
 		var args = {};
 		args.callback = getSessionTokenCallback;
 		args.url = providerServer + "environments/environment";
-		args.data = body.replace("${USER_TOKEN}",zoneId);
+		args.data = body;
 		args.dataType = "XML";
 	//	args.contentType = "application/xml";
 		args.type = "POST";
-		var token = "HITS:" + password;
+		var token = applicationKey + ":" + password;
 		token = Base64.encode(token);
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
@@ -544,15 +544,39 @@ var hitsclient = (function(_app) {
 	};
 
 	var validateEnvironment = function() {
-		var zoneId = $("#zoneId").val();
-		if (zoneId.length == 0) {
-			panelError("Please enter a School Reference Id");
-			$("#zoneId").parent("div").addClass("has-error");
+    // Need either Session Token or Full Details
+    var sessionValid = false;
+    var sessionToken = $("#sessionToken").val();
+    if (sessionToken.length > 0) {
+      sessionValid = true;
+    } 
+		var solutionId = $("#solutionId").val();
+		if (!sessionValid && solutionId.length == 0) {
+			panelError("Please enter a Solution Id");
+			$("#solutionId").parent("div").addClass("has-error");
 			return false;
 		} 
 		else {
-			$("#zoneId").parent("div").removeClass("has-error");
+			$("#solutionId").parent("div").removeClass("has-error");
 		}
+    var applicationKey = $("#applicationKey").val();
+    if (!sessionValid && applicationKey.length == 0) {
+      panelError("Please enter an Application Key");
+      $("#applicationKey").parent("div").addClass("has-error");
+      return false;
+    } 
+    else {
+      $("#applicationKey").parent("div").removeClass("has-error");
+    }
+    var userToken = $("#userToken").val();
+    if (!sessionValid && userToken.length == 0) {
+      panelError("Please enter a User Token");
+      $("#userToken").parent("div").addClass("has-error");
+      return false;
+    } 
+    else {
+      $("#userToken").parent("div").removeClass("has-error");
+    }
 		var password = $("#password").val();
 		if (password.length == 0) {
 			panelError("Please enter a Password");
@@ -564,12 +588,9 @@ var hitsclient = (function(_app) {
 		}
 		var sessionToken = $("#sessionToken").val();
 		if (sessionToken.length == 0) {
-			getSessionToken(zoneId, password);
+			getSessionToken(solutionId, applicationKey, userToken, password);
 			return false;
 		} 
-		else {
-			$("#password").parent("div").removeClass("has-error");
-		}
 		return true;
 	}
 
@@ -603,7 +624,7 @@ var hitsclient = (function(_app) {
 
 	var executeCall = function() {
 		if (validateEnvironment() && validateProvider() && validateMethod()) {
-			var zoneId = $("#zoneId").val();
+			var zoneId = $("#userToken").val();
 			var password = $("#password").val();
 			var sessionToken = $("#sessionToken").val();
 			var provider = $("#provider option:selected").data("provider");
