@@ -18,8 +18,8 @@ BUGS / TASKS
 
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
-	// var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
-	var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
+	var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
+	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	// XXX Move this to separate file, to allow re-use of Infrastructure code with different Data sets / examples
 	var providers = [
