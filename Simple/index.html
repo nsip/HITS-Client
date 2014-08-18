@@ -151,6 +151,10 @@
           if (userToken) {
             $('#userToken').val(userToken); 
           }
+          var password = $.url().param('password');
+          if (password) {
+            $('#password').val(password); 
+          }
       });
     </script>
   </body>
