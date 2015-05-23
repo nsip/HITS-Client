@@ -18,8 +18,8 @@ BUGS / TASKS
 
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
-    var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
-	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
+    // var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
+	var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
 	var loadMethodValues = function() {
@@ -229,6 +229,14 @@ var hitsclient = (function(_app) {
 		}
 
 		var args = {};
+		
+		var single = provider.value.slice(0,-1);
+		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/1.3"';
+		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
+		if (body.indexOf("xmlns") < 0) {
+			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
+		}
+
 		args.callback = executeCallback;
 		args.url = providerServer + "requests/" + provider.value + "/" + provider.value;
 		args.url = args.url.slice(0, - 1);	// Strip plural provider name
