@@ -19,26 +19,26 @@ var hitsclient = (function(_app) {
       "  <JobEndDate>2001-06-25</JobEndDate>\n" +
       "  <JobFTE>1.00</JobFTE>\n" +
       "  <JobFunction>Teacher</JobFunction>\n" +
-      "  <StaffActivity>\n" +
-      "    <Code>1100</Code>\n" +
-      "  </StaffActivity>\n" +
       "  <StaffSubjectList>\n" +
       "    <StaffSubject>\n" +
       "      <PreferenceNumber>1</PreferenceNumber>\n" +
       "      <SubjectLocalId>English</SubjectLocalId>\n" +
-      "   <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
+      "      <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
       "    </StaffSubject>\n" +
       "    <StaffSubject>\n" +
       "      <PreferenceNumber>2</PreferenceNumber>\n" +
       "      <SubjectLocalId>Mathematics</SubjectLocalId>\n" +
-      "   <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
+      "      <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
       "    </StaffSubject>\n" +
       "    <StaffSubject>\n" +
       "      <PreferenceNumber>3</PreferenceNumber>\n" +
       "      <SubjectLocalId>Science</SubjectLocalId>\n" +
-      "   <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
+      "      <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
       "    </StaffSubject>\n" +
       "  </StaffSubjectList>\n" +
+      "  <StaffActivity>\n" +
+      "    <Code>1100</Code>\n" +
+      "  </StaffActivity>\n" +
       "  <YearLevels>\n" +
       "    <YearLevel>\n" +
       "      <Code>11</Code>\n" +

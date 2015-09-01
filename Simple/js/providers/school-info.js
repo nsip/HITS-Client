@@ -15,8 +15,6 @@ var hitsclient = (function(_app) {
       "  <SchoolEmailList>\n" +
       "    <Email Type=\"01\">jmiller@lsc.vic.edu.au</Email>\n" +
       "  </SchoolEmailList>\n" +
-      "  <OperationalStatus>O</OperationalStatus>\n" +
-      "  <SchoolSector>NG</SchoolSector>\n" +
       "  <AddressList>\n" +
       "    <Address Type=\"0123\" Role=\"012B\">\n" +
       "      <Street>\n" +
@@ -28,6 +26,8 @@ var hitsclient = (function(_app) {
       "      <PostalCode>3004</PostalCode>\n" +
       "    </Address>  \n" +
       "  </AddressList>\n" +
+      "  <OperationalStatus>O</OperationalStatus>\n" +
+      "  <SchoolSector>NG</SchoolSector>\n" +
       "</SchoolInfo>\n"
   });
 

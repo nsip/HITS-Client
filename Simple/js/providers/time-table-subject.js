@@ -17,11 +17,11 @@ var hitsclient = (function(_app) {
       "  <SubjectShortName>7 ART</SubjectShortName>\n" +
       "  <SubjectLongName>Year 7 Art</SubjectLongName>\n" +
       "  <SubjectType>E</SubjectType>\n" +
-      "  <ProposedMaxClassSize>10</ProposedMaxClassSize>\n" +
-      "  <ProposedMinClassSize>15</ProposedMinClassSize>\n" +
+      "  <ProposedMaxClassSize>15</ProposedMaxClassSize>\n" +
+      "  <ProposedMinClassSize>10</ProposedMinClassSize>\n" +
       "  <SchoolInfoRefId>{RefId}</SchoolInfoRefId>\n" +
       "  <SchoolLocalId>32718</SchoolLocalId>\n" +
-      "  <Semester>2009</Semester >\n" +
+      "  <Semester>1</Semester >\n" +
       "  <SchoolYear>2009</SchoolYear>\n" +
       "</TimeTableSubject>\n"
   });

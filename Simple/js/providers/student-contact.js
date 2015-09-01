@@ -9,7 +9,7 @@ var hitsclient = (function(_app) {
     template : 
       "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-      "<StudentContactPersonal RefId=\"{refId}\">\n" +
+      "<StudentContactPersonal>\n" +
       "    <LocalId>LocalId</LocalId>\n" +
       "    <PersonInfo>\n" +
       "        <Name>\n" +

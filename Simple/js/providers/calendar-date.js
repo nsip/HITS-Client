@@ -10,7 +10,6 @@ var hitsclient = (function(_app) {
           "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
           "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
           "<CalendarDate CalendarSummaryRefId='{RefId}' Date='2014-11-06'>\n" +
-          "  <CalendarDateRefId>{RefId}</CalendarDateRefId>\n" +
           "  <SchoolInfoRefId>{RefId}</SchoolInfoRefId>\n" +
           "  <SchoolYear>2014</SchoolYear>\n" +
           "  <CalendarDateType>\n" +
