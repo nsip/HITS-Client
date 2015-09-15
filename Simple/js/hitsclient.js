@@ -231,7 +231,7 @@ var hitsclient = (function(_app) {
 		var args = {};
 		
 		var single = provider.value.slice(0,-1);
-		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/1.3"';
+		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/1.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
 			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
