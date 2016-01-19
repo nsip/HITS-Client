@@ -18,7 +18,7 @@ BUGS / TASKS
 
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
-    var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
+    var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
 	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
@@ -35,6 +35,10 @@ var hitsclient = (function(_app) {
 		executeMethod : executePostOne,
 		parameterBody : "postOne"
 	});	
+	methods.push({ name : "Put One",
+		executeMethod : executePutOne,
+		parameterBody : "putOne"
+	});		
 	};
 
 	/* TODO Consider using timestamp (although, is uuid needed?)
@@ -217,7 +221,54 @@ var hitsclient = (function(_app) {
 		}
 	};
 
-	var executePostOne = function(zoneId, password, sessionToken, provider, method) {
+    var executePutOne = function(zoneId, password, sessionToken, provider, method) {
+		var body = $("#putOneBody").val();
+		if (body.length == 0) {
+			panelError("Please enter a XML Body");
+			$("#putOneBody").parent("div").addClass("has-error");
+			return;
+		} 
+		else {
+			$("#putOneBody").parent("div").removeClass("has-error");
+		}
+
+		var refid = $("putOneReferenceId").val();
+		if (refId.length == 0) {
+			panelError("Please enter a Reference Id");
+			$("#putOneReferenceId").parent("div").addClass("has-error");
+			return;
+		} else {
+			$("#putOneReferenceId").parent("div").removeClass("has-error");
+		}
+
+		var args = {};
+		
+		var single = provider.value.slice(0,-1);
+		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
+		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
+		if (body.indexOf("xmlns") < 0) {
+			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
+		}
+
+
+		args.callback = executeCallback;
+		args.url = providerServer + "requests/" + provider.value + "/" + provider.value + "/" + refid;
+		args.url = args.url.slice(0, - 1);	// Strip plural provider name
+	//	args.contentType = "application/xml";
+		args.dataType = "XML";
+		args.type = "POST";
+		var token = sessionToken + ":" + password;
+		token = Base64.encode(token);
+		args.token = token;
+		args.headers = {};
+		args.headers["Content-Type"] = "application/xml";
+		args.headers["Authorization"] = "Basic " + token;
+		args.data = body;
+		ajax(args);
+    }
+
+
+    var executePostOne = function(zoneId, password, sessionToken, provider, method) {
 		var body = $("#postOneBody").val();
 		if (body.length == 0) {
 			panelError("Please enter a XML Body");
@@ -231,7 +282,7 @@ var hitsclient = (function(_app) {
 		var args = {};
 		
 		var single = provider.value.slice(0,-1);
-		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/1.4"';
+		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
 			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
@@ -361,6 +412,10 @@ var hitsclient = (function(_app) {
 		if (method && method.parameterBody == 'postOne') {
 			$("#postOneBody").val(provider.template ? provider.template : '');
 		}
+		if (method && method.parameterBody == 'putOne') {
+			$("#putOneBody").val(provider.template ? provider.template : '');
+		}
+
 	};
 
 	var populateProviders = function() {
