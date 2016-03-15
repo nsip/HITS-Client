@@ -13,6 +13,7 @@ var hitsclient = (function(_app) {
       "  <ParentObjectRefId SIF_RefObject=\"StudentPersonal\">{RefId}</ParentObjectRefId>\n" +
       "  <SchoolYear>2016</SchoolYear>\n" +
       "  <PictureSource Type=\"01\">http://www.gravatar.com/avatar/HASH?d=mm</PictureSource>\n" +
+      "  <OKToPublish>N</OKToPublish>\n" +
       "</PersonPicture>\n"
   });
 

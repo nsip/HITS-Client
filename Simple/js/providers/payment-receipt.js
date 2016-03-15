@@ -14,10 +14,9 @@ var hitsclient = (function(_app) {
       "    <InvoiceRefId>{RefId}</InvoiceRefId>\n" +
       "    <VendorInfoRefId>{RefId}</VendorInfoRefId>\n" +
       "    <DebtorRefId>{RefId}</DebtorRefId>\n" +
-      "    <PurchaseOrderRefId>{RefId}</PurchaseOrderRefId>\n" +
       "    <ChargedLocationInfoRefId>{RefId}</ChargedLocationInfoRefId>\n" +
       "    <TransactionDate>2015-06-23</TransactionDate>\n" +
-      "    <ReceivedAmount Type=\"Debit\" Currency=\"AUD\">25.00</ReceivedAmount>\n" +
+      "    <TransactionAmount Type=\"Debit\" Currency=\"AUD\">25.00</TransactionAmount>\n" +
       "    <ReceivedTransactionId>201546</ReceivedTransactionId>\n" +
       "    <FinancialAccountRefIdList>\n" +
       "        <FinancialAccountRefId>{RefId}</FinancialAccountRefId>\n" +

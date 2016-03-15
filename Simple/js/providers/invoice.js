@@ -11,6 +11,7 @@ var hitsclient = (function(_app) {
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
       "<Invoice>\n" +
       "  <InvoicedEntity SIF_RefObject=\"Debtor\">{RefId}</InvoicedEntity>\n" +
+      "  <FormNumber>8BC001</FormNumber>\n" +
       "  <BillingDate>2015-07-01</BillingDate>\n" +
       "  <TransactionDescription>Textbooks</TransactionDescription>\n" +
       "  <BilledAmount Type=\"Debit\" Currency=\"AUD\">320.00</BilledAmount>\n" +
@@ -28,6 +29,14 @@ var hitsclient = (function(_app) {
       "  </FinancialAccountRefIdList>\n" +
       "  <AccountingPeriod>2015Q3</AccountingPeriod>\n" +
       "  <RelatedPurchaseOrderRefId>{RefId}</RelatedPurchaseOrderRefId>\n" +
+      "  <PurchasingItems>\n" +
+      "    <PurchasingItem>\n" +
+      "       <ItemNumber>XYZ123</ItemNumber>\n" +
+      "       <ItemDescription>Widget</ItemDescription>\n" +
+      "       <Quantity>4</Quantity>\n" +
+      "       <UnitCost Currency=\"AUD\">80.00</UnitCost>\n" +
+      "    </PurchasingItem>\n" +
+      "  </PurchasingItems>\n" +
       "  <Voluntary>N</Voluntary>\n" +
       "</Invoice>"
   });

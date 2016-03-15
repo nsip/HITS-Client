@@ -34,7 +34,6 @@ var hitsclient = (function(_app) {
       "  <CreationDate>2015-02-23</CreationDate>\n" +
       "  <TaxRate>0.1</TaxRate>\n" +
       "  <TaxAmount Currency=\"AUD\">8.00</TaxAmount>\n" +
-      "  <AmountDelivered>2</AmountDelivered>\n" +
       "  <UpdateDate>2015-09-01</UpdateDate>\n" +
       "  <FullyDelivered>Y</FullyDelivered>\n" +
       "</PurchaseOrder>\n"

@@ -45,7 +45,6 @@ var hitsclient = (function(_app) {
           "      <AttendanceStatus>01</AttendanceStatus>\n" +
           "      <StartTime>12:05:00</StartTime>\n" +
           "      <EndTime>15:30:00</EndTime>\n" +
-          "      <AttendanceNote />\n" +
           "    </AttendanceTime>\n" +
           "  </AttendanceTimes>\n" +
           "</StudentAttendanceTimeList>"

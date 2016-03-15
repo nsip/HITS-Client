@@ -14,8 +14,8 @@ var hitsclient = (function(_app) {
       "  <SiteCategory>Campus</SiteCategory>\n" +
       "  <Name>Main Campus</Name>\n" +
       "  <Description>Description</Description>\n" +
-      "  <LocalId>localId</LocalId>\n" +
-      "  <StateProvinceId>WA</StateProvinceId>\n" +
+      "  <LocalId>LocalId</LocalId>\n" +
+      "  <StateProvinceId>JurisdictionId</StateProvinceId>\n" +
       "  <SchoolInfoRefId>{RefId}</SchoolInfoRefId>\n" +
       "  <AddressList>\n" +
       "    <Address Type="0123" Role="012B">\n" +
