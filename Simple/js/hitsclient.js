@@ -378,12 +378,12 @@ var hitsclient = (function(_app) {
 		$("#responseStatusText").text(xhr.statusText);
 		$("#response").text(xhr.responseText);
 		if (args.url.indexOf("\?") > 0)	{
-			$('#responseURL').text(args.url + '&accessToken=' + args.token);
-			$('#responseURL').attr('href', args.url + '&accessToken=' + args.token);
+			$('#responseURL').text(args.url + '&access_token=' + args.token);
+			$('#responseURL').attr('href', args.url + '&access_token=' + args.token);
 		}
 		else {
-			$('#responseURL').text(args.url + '?accessToken=' + args.token);
-			$('#responseURL').attr('href', args.url + '?accessToken=' + args.token);
+			$('#responseURL').text(args.url + '?access_token=' + args.token);
+			$('#responseURL').attr('href', args.url + '?access_token=' + args.token);
 		}
 	};
 
