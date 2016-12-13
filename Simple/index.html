@@ -29,6 +29,10 @@
           <div class="bs-example">
             <form role="form">
               <div class="form-group">
+                <label for="providerServer">Provider Server</label>
+                <input type="text" class="form-control" id="providerServer" placeholder="Provider Server" value="http://hits.nsip.edu.au/SIF3InfraREST/hits/">
+              </div>
+              <div class="form-group">
                 <label for="zoneId">Solution ID</label>
                 <input type="text" class="form-control" id="solutionId" placeholder="Enter Solution Id" value="HITS">
               </div>
@@ -181,11 +185,17 @@
       $(document).ready(function() {
         hitsclient.ready();
 
+// XXX Fix some of these.
+	var providerServer = $.url().param('providerServer');
+	if (providerServer) {
+		$('#providerServer').val(providerServer);	
+	}
+
         	// Load School REF ID - Backwards compatibile
-        	var school_id = $.url().param('school_id');
-        	if (school_id) {
-        		$('#userToken').val(school_id);	
-        	}
+	var school_id = $.url().param('school_id');
+	if (school_id) {
+		$('#userToken').val(school_id);	
+	}
           var solutionId = $.url().param('solution_id');
           if (solutionId) {
             $('#solutionId').val(solutionId); 

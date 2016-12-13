@@ -18,7 +18,8 @@ BUGS / TASKS
 
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
-	var providerServer = "http://hits.dev.nsip.edu.au/SIF3InfraREST/hits/";
+	// XXX Make this configurable like the others.
+	var providerServer = "http://hits.nsip.edu.au/SIF3InfraREST/hits/";
 	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
@@ -349,8 +350,8 @@ var hitsclient = (function(_app) {
 		else {
 			$("#getManyPage").parent("div").removeClass("has-error");
 		}
-		page = new Number(page) - 1;
-		if (page < 0) page = 0;
+		page = new Number(page);
+		if (page < 1) page = 1;
 
 
 		var args = {};
