@@ -4,30 +4,30 @@ var hitsclient = (function(_app) {
   }
 
   _app.providers.push({
-    name : "Student Personal",
+    name : "Student Personal (naplan)",
     value : "StudentPersonals",
     template : 
       "<StudentPersonal>\n" + 
       "  <LocalId>coqqg649</LocalId>\n" + 
       "  <StateProvinceId>94931</StateProvinceId>\n" + 
       "  <OtherIdList>\n" + 
-      "    <OtherId Type="SectorStudentId">16447</OtherId>\n" + 
-      "    <OtherId Type="DiocesanStudentId">61853</OtherId>\n" + 
-      "    <OtherId Type="OtherStudentId">58922</OtherId>\n" + 
-      "    <OtherId Type="TAAStudentId">35034</OtherId>\n" + 
-      "    <OtherId Type="NationalStudentId">16497</OtherId>\n" + 
-      "    <OtherId Type="NAPPlatformStudentId">R100000000K</OtherId>\n" + 
-      "    <OtherId Type="PreviousLocalSchoolStudentId">83157</OtherId>\n" + 
-      "    <OtherId Type="PreviousSectorStudentId">92091</OtherId>\n" + 
-      "    <OtherId Type="PreviousDiocesanStudentId">38409</OtherId>\n" + 
-      "    <OtherId Type="PreviousOtherStudentId">95589</OtherId>\n" + 
-      "    <OtherId Type="PreviousTAAStudentId">57431</OtherId>\n" + 
-      "    <OtherId Type="PreviousStateProvinceId">17738</OtherId>\n" + 
-      "    <OtherId Type="PreviousNationalStudentId">53450</OtherId>\n" + 
-      "    <OtherId Type="PreviousNAPPlatformStudentId">98305</OtherId>\n" + 
+      '    <OtherId Type="SectorStudentId">16447</OtherId>' + "\n" + 
+      '    <OtherId Type="DiocesanStudentId">61853</OtherId>' + "\n" + 
+      '    <OtherId Type="OtherStudentId">58922</OtherId>' + "\n" + 
+      '    <OtherId Type="TAAStudentId">35034</OtherId>' + "\n" + 
+      '    <OtherId Type="NationalStudentId">16497</OtherId>' + "\n" + 
+      '    <OtherId Type="NAPPlatformStudentId">R100000000K</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousLocalSchoolStudentId">83157</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousSectorStudentId">92091</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousDiocesanStudentId">38409</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousOtherStudentId">95589</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousTAAStudentId">57431</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousStateProvinceId">17738</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousNationalStudentId">53450</OtherId>' + "\n" + 
+      '    <OtherId Type="PreviousNAPPlatformStudentId">98305</OtherId>' + "\n" + 
       "  </OtherIdList>\n" + 
       "  <PersonInfo>\n" + 
-      "    <Name Type="LGL">\n" + 
+      '    <Name Type="LGL">' +"\n" + 
       "      <FamilyName>Wilson</FamilyName>\n" + 
       "      <GivenName>Laverne</GivenName>\n" + 
       "      <MiddleName></MiddleName>\n" + 
@@ -60,7 +60,7 @@ var hitsclient = (function(_app) {
       "      <LBOTE>N</LBOTE>\n" + 
       "    </Demographics>\n" + 
       "    <AddressList>\n" + 
-      "      <Address Type="0123" Role="012B">\n" + 
+      '      <Address Type="0123" Role="012B">' + "\n" + 
       "        <Street>\n" + 
       "          <Line1>146 East State Street</Line1>\n" + 
       "        </Street>\n" + 
