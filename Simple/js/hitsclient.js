@@ -15,7 +15,6 @@ BUGS / TASKS
 	* Consider adding records, which School is it added to for security on SIF side?
 
 */
-
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
 	// XXX Make this configurable like the others.
@@ -24,22 +23,26 @@ var hitsclient = (function(_app) {
 
 	var methods = [];
 	var loadMethodValues = function() {
-	methods.push({ name : "Get One",
-		executeMethod : executeGetOne,
-		parameterBody : "getOne"
-	});
-	methods.push({ name : "Get Many",
-		executeMethod : executeGetMany,
-		parameterBody : "getMany"
-	});	
-	methods.push({ name : "Post One",
-		executeMethod : executePostOne,
-		parameterBody : "postOne"
-	});	
-	methods.push({ name : "Put One",
-		executeMethod : executePutOne,
-		parameterBody : "putOne"
-	});		
+		methods.push({
+			name: "Get One",
+			executeMethod: executeGetOne,
+			parameterBody: "getOne"
+		});
+		methods.push({
+			name: "Get Many",
+			executeMethod: executeGetMany,
+			parameterBody: "getMany"
+		});
+		methods.push({
+			name: "Post One",
+			executeMethod: executePostOne,
+			parameterBody: "postOne"
+		});
+		methods.push({
+			name: "Put One",
+			executeMethod: executePutOne,
+			parameterBody: "putOne"
+		});
 	};
 
 	/* TODO Consider using timestamp (although, is uuid needed?)
@@ -55,23 +58,29 @@ var hitsclient = (function(_app) {
 	*/
 	var uuid = function() {
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			var r = Math.random() * 16 | 0,
+				v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
 		});
 	};
 
 	// TODO Consider using done instead of success
-	var ajax = function (args) {
-		args.success = function(result, status, xhr) { ajaxSuccess.call(this, result, status, xhr, args, args.callback); return true;};
-		args.error = function(xhr, status, reason) { ajaxFailure.call(this, xhr, status, reason, args, args.callback); return true;};
+	var ajax = function(args) {
+		args.success = function(result, status, xhr) {
+			ajaxSuccess.call(this, result, status, xhr, args, args.callback);
+			return true;
+		};
+		args.error = function(xhr, status, reason) {
+			ajaxFailure.call(this, xhr, status, reason, args, args.callback);
+			return true;
+		};
 		$.ajax(args);
 	};
 
 	var ajaxSuccess = function(result, status, xhr, args, callback) {
 		if (callback) {
 			callback.call(this, xhr, status, result, undefined, args);
-		} 
-		else {
+		} else {
 			console.log(result);
 			console.log(status);
 			console.log(xhr);
@@ -81,8 +90,7 @@ var hitsclient = (function(_app) {
 	var ajaxFailure = function(xhr, status, reason, args, callback) {
 		if (callback) {
 			callback.call(this, xhr, status, undefined, reason, args);
-		} 
-		else {
+		} else {
 			console.log(reason);
 			console.log(status);
 			console.log(xhr);
@@ -100,30 +108,52 @@ var hitsclient = (function(_app) {
 
 	var getSessionToken = function(solutionId, applicationKey, userToken, password) {
 		var body = hitsclient.environment.getDetailed(solutionId, applicationKey, userToken);
-    console.log(body);
+		console.log(body);
 		var args = {};
 		args.callback = getSessionTokenCallback;
 		args.url = providerServer + "environments/environment";
 		args.data = body;
 		args.dataType = "XML";
-	//	args.contentType = "application/xml";
+		//	args.contentType = "application/xml";
 		args.type = "POST";
-		var token = applicationKey + ":" + password;
-		token = Base64.encode(token);
+		var token = getTokenForAuth(applicationKey, password);
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = "Basic " + token;
+		args.headers["Authorization"] = token.method + " " + token.value;
+		if (token.timestamp) {
+			args.headers["timestamp"] = token.timestamp;
+		}
 		args.notifier = executeCall;
 		ajax(args);
 	};
+
+	var getTokenForAuth = function(userPart, passPart) {
+		var method = $("#authentication-method").val();
+		var token = {
+			method: "",
+			value: ""
+		};
+		if (method === "SIF_HMACSHA256") {
+			token.timestamp = new moment().toISOString();
+			token.method = method;
+			var value = userPart + ":" + CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(userPart + ":" + token.timestamp, passPart));
+			value = Base64.encode(value);
+			token.value = value;
+		} else {
+			var value = userPart + ":" + passPart;
+			value = Base64.encode(value);
+			token.value = value;
+			token.method = "Basic";
+		}
+		return token;
+	}
 
 	var getSessionTokenCallback = function(xhr, status, result, reason, args) {
 		if (xhr.status == 409 || xhr.status == 201) {
 			var sessionToken = getFirstXmlTagContents(xhr.responseText, "sessionToken");
 			$("#sessionToken").val(sessionToken);
 			args.notifier.call(this);
-		} 
-		else {
+		} else {
 			var message = getFirstXmlTagContents(xhr.responseText, "message");
 			if (message == null) {
 				message = "Status " + xhr.status + " (" + reason + ")";
@@ -133,53 +163,49 @@ var hitsclient = (function(_app) {
 	};
 
 	var validateEnvironment = function() {
-    // Need either Session Token or Full Details
-    var sessionValid = false;
-    var sessionToken = $("#sessionToken").val();
-    if (sessionToken.length > 0) {
-      sessionValid = true;
-    } 
+		// Need either Session Token or Full Details
+		var sessionValid = false;
+		var sessionToken = $("#sessionToken").val();
+		if (sessionToken.length > 0) {
+			sessionValid = true;
+		}
 		var solutionId = $("#solutionId").val();
 		if (!sessionValid && solutionId.length == 0) {
 			panelError("Please enter a Solution Id");
 			$("#solutionId").parent("div").addClass("has-error");
 			return false;
-		} 
-		else {
+		} else {
 			$("#solutionId").parent("div").removeClass("has-error");
 		}
-    var applicationKey = $("#applicationKey").val();
-    if (!sessionValid && applicationKey.length == 0) {
-      panelError("Please enter an Application Key");
-      $("#applicationKey").parent("div").addClass("has-error");
-      return false;
-    } 
-    else {
-      $("#applicationKey").parent("div").removeClass("has-error");
-    }
-    var userToken = $("#userToken").val();
-    if (!sessionValid && userToken.length == 0) {
-      panelError("Please enter a User Token");
-      $("#userToken").parent("div").addClass("has-error");
-      return false;
-    } 
-    else {
-      $("#userToken").parent("div").removeClass("has-error");
-    }
+		var applicationKey = $("#applicationKey").val();
+		if (!sessionValid && applicationKey.length == 0) {
+			panelError("Please enter an Application Key");
+			$("#applicationKey").parent("div").addClass("has-error");
+			return false;
+		} else {
+			$("#applicationKey").parent("div").removeClass("has-error");
+		}
+		var userToken = $("#userToken").val();
+		if (!sessionValid && userToken.length == 0) {
+			panelError("Please enter a User Token");
+			$("#userToken").parent("div").addClass("has-error");
+			return false;
+		} else {
+			$("#userToken").parent("div").removeClass("has-error");
+		}
 		var password = $("#password").val();
 		if (password.length == 0) {
 			panelError("Please enter a Password");
 			$("#password").parent("div").addClass("has-error");
 			return false;
-		} 
-		else {
+		} else {
 			$("#password").parent("div").removeClass("has-error");
 		}
 		var sessionToken = $("#sessionToken").val();
 		if (sessionToken.length == 0) {
 			getSessionToken(solutionId, applicationKey, userToken, password);
 			return false;
-		} 
+		}
 		return true;
 	}
 
@@ -188,8 +214,7 @@ var hitsclient = (function(_app) {
 		var provider = providerOption.data("provider");
 		if (provider && provider != null) {
 			$("#provider").parent("div").removeClass("has-error");
-		} 
-		else {
+		} else {
 			panelError("Please select a Provider");
 			$("#provider").parent("div").addClass("has-error");
 			return false;
@@ -202,8 +227,7 @@ var hitsclient = (function(_app) {
 		var method = methodOption.data("method");
 		if (method && method != null) {
 			$("#method").parent("div").removeClass("has-error");
-		} 	
-		else {
+		} else {
 			panelError("Please select a Method");
 			$("#method").parent("div").addClass("has-error");
 			return false;
@@ -222,14 +246,13 @@ var hitsclient = (function(_app) {
 		}
 	};
 
-    var executePutOne = function(zoneId, password, sessionToken, provider, method) {
+	var executePutOne = function(zoneId, password, sessionToken, provider, method) {
 		var body = $("#putOneBody").val();
 		if (body.length == 0) {
 			panelError("Please enter a XML Body");
 			$("#putOneBody").parent("div").addClass("has-error");
 			return;
-		} 
-		else {
+		} else {
 			$("#putOneBody").parent("div").removeClass("has-error");
 		}
 
@@ -243,8 +266,8 @@ var hitsclient = (function(_app) {
 		}
 
 		var args = {};
-		
-		var single = provider.value.slice(0,-1);
+
+		var single = provider.value.slice(0, -1);
 		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
@@ -254,35 +277,36 @@ var hitsclient = (function(_app) {
 
 		args.callback = executeCallback;
 		args.url = providerServer + "requests/" + provider.value + "/" + provider.value + "/" + refid;
-		args.url = args.url.slice(0, - 1);	// Strip plural provider name
-	//	args.contentType = "application/xml";
+		args.url = args.url.slice(0, -1); // Strip plural provider name
+		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "POST";
-		var token = sessionToken + ":" + password;
-		token = Base64.encode(token);
+		var token = getTokenForAuth(sessionToken, password);
 		args.token = token;
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = "Basic " + token;
+		args.headers["Authorization"] = token.method + " " + token.value;
+		if (token.timestamp) {
+			args.headers["timestamp"] = token.timestamp;
+		}
 		args.data = body;
 		ajax(args);
-    }
+	}
 
 
-    var executePostOne = function(zoneId, password, sessionToken, provider, method) {
+	var executePostOne = function(zoneId, password, sessionToken, provider, method) {
 		var body = $("#postOneBody").val();
 		if (body.length == 0) {
 			panelError("Please enter a XML Body");
 			$("#postOneBody").parent("div").addClass("has-error");
 			return;
-		} 
-		else {
+		} else {
 			$("#postOneBody").parent("div").removeClass("has-error");
 		}
 
 		var args = {};
-		
-		var single = provider.value.slice(0,-1);
+
+		var single = provider.value.slice(0, -1);
 		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
@@ -291,16 +315,18 @@ var hitsclient = (function(_app) {
 
 		args.callback = executeCallback;
 		args.url = providerServer + "requests/" + provider.value + "/" + provider.value;
-		args.url = args.url.slice(0, - 1);	// Strip plural provider name
-	//	args.contentType = "application/xml";
+		args.url = args.url.slice(0, -1); // Strip plural provider name
+		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "POST";
-		var token = sessionToken + ":" + password;
-		token = Base64.encode(token);
+		var token = getTokenForAuth(sessionToken, password);
 		args.token = token;
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = "Basic " + token;
+		args.headers["Authorization"] = token.method + " " + token.value;
+		if (token.timestamp) {
+			args.headers["timestamp"] = token.timestamp;
+		}
 		args.data = body;
 		ajax(args);
 	};
@@ -311,23 +337,24 @@ var hitsclient = (function(_app) {
 			panelError("Please enter a Reference Id");
 			$("#getOneReferenceId").parent("div").addClass("has-error");
 			return;
-		} 
-		else {
+		} else {
 			$("#getOneReferenceId").parent("div").removeClass("has-error");
 		}
 
 		var args = {};
 		args.callback = executeCallback;
 		args.url = providerServer + "requests/" + provider.value + "/" + referenceId;
-	//	args.contentType = "application/xml";
+		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "GET";
-		var token = sessionToken + ":" + password;
-		token = Base64.encode(token);
+		var token = getTokenForAuth(sessionToken, password);
 		args.token = token;
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = "Basic " + token;
+		args.headers["Authorization"] = token.method + " " + token.value;
+		if (token.timestamp) {
+			args.headers["timestamp"] = token.timestamp;
+		}
 		ajax(args);
 	};
 
@@ -337,8 +364,7 @@ var hitsclient = (function(_app) {
 			panelError("Please enter a value for Records per Page");
 			$("#getManyRecordsPerPage").parent("div").addClass("has-error");
 			return;
-		} 
-		else {
+		} else {
 			$("#getManyRecordsPerPage").parent("div").removeClass("has-error");
 		}
 		var page = $("#getManyPage").val();
@@ -346,8 +372,7 @@ var hitsclient = (function(_app) {
 			panelError("Please enter a value for Page Number");
 			$("#getManyPage").parent("div").addClass("has-error");
 			return;
-		} 
-		else {
+		} else {
 			$("#getManyPage").parent("div").removeClass("has-error");
 		}
 		page = new Number(page);
@@ -357,15 +382,17 @@ var hitsclient = (function(_app) {
 		var args = {};
 		args.callback = executeCallback;
 		args.url = providerServer + "requests/" + provider.value + "?navigationPage=" + page + "&navigationPageSize=" + recordsPerPage;
-	//	args.contentType = "application/xml";
+		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "GET";
-		var token = sessionToken + ":" + password;
-		token = Base64.encode(token);
+		var token = getTokenForAuth(sessionToken, password);
 		args.token = token;
 		args.headers = {};
 		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = "Basic " + token;
+		args.headers["Authorization"] = token.method + " " + token.value;
+		if (token.timestamp) {
+			args.headers["timestamp"] = token.timestamp;
+		}
 		ajax(args);
 	};
 
@@ -378,19 +405,23 @@ var hitsclient = (function(_app) {
 		$("#responseStatus").text(xhr.status);
 		$("#responseStatusText").text(xhr.statusText);
 		$("#response").text(xhr.responseText);
-		if (args.url.indexOf("\?") > 0)	{
-			$('#responseURL').text(args.url + '&access_token=' + args.token);
-			$('#responseURL').attr('href', args.url + '&access_token=' + args.token);
+		var newUrl = args.url;
+		if (args.url.indexOf("\?") > 0) {
+			newUrl = newUrl + '&access_token=' + args.token.value;
+		} else {
+			newUrl = newUrl + '?access_token=' + args.token.value;
 		}
-		else {
-			$('#responseURL').text(args.url + '?access_token=' + args.token);
-			$('#responseURL').attr('href', args.url + '?access_token=' + args.token);
+		newUrl += '&authenticationMethod=' + args.token.method;
+		if (args.token.timestamp) {
+			newUrl += '&timestamp=' + args.token.timestamp;
 		}
+		$('#responseURL').text(newUrl);
+		$('#responseURL').attr('href', newUrl);
 	};
 
 	var getFirstXmlTagContents = function(xmlDocument, xmlTag) {
 		var result = null;
-		var regularExpression = new RegExp("<" + xmlTag + ">([^<]*)<","g");
+		var regularExpression = new RegExp("<" + xmlTag + ">([^<]*)<", "g");
 		var matches = regularExpression.exec(xmlDocument);
 		if (matches && matches != null && matches.length > 1) {
 			result = matches[1];
@@ -403,11 +434,11 @@ var hitsclient = (function(_app) {
 		var providerOption = $("#provider option:selected");
 		var method = methodOption.data("method");
 		var provider = providerOption.data("provider");
-		$(".parameter-header").css("display","none");
-		$(".parameter-block").css("display","none");
+		$(".parameter-header").css("display", "none");
+		$(".parameter-block").css("display", "none");
 		if (method && method.parameterBody) {
-			$(".parameter-header").css("display","");
-			$("#" + method.parameterBody).css("display","");
+			$(".parameter-header").css("display", "");
+			$("#" + method.parameterBody).css("display", "");
 		}
 		// Optional parameter values from Provider / Method combination
 		if (method && method.parameterBody == 'postOne') {
@@ -446,6 +477,40 @@ var hitsclient = (function(_app) {
 		loadMethodValues();
 		populateMethods();
 		$("#execute").on("click", executeCall);
+
+		var providerServer = $.url().param('providerServer');
+		if (providerServer) {
+			$('#providerServer').val(providerServer);
+		}
+
+		// Load School REF ID - Backwards compatibile
+		var school_id = $.url().param('school_id');
+		if (school_id) {
+			$('#userToken').val(school_id);
+		}
+		var solutionId = $.url().param('solution_id');
+		if (solutionId) {
+			$('#solutionId').val(solutionId);
+		}
+		var applicationKey = $.url().param('application_key');
+		if (applicationKey) {
+			$('#applicationKey').val(applicationKey);
+		}
+		var userToken = $.url().param('user_token');
+		if (userToken) {
+			$('#userToken').val(userToken);
+		}
+		var password = $.url().param('password');
+		if (password) {
+			$('#password').val(password);
+		}
+		var hmac = $.url().param('auth_method');
+		if (hmac) {
+			$('#authentication-method').val(hmac);
+		}
+		if ($("#authentication-method").val() !== "Basic" && $("#authentication-method").val() !== "SIF_HMACSHA256") {
+		    $('#authentication-method').val("Basic");
+		}
 	};
 
 	return _app;
