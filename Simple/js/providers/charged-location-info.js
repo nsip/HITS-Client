@@ -18,7 +18,7 @@ var hitsclient = (function(_app) {
       "  <StateProvinceId>JurisdictionId</StateProvinceId>\n" +
       "  <SchoolInfoRefId>{RefId}</SchoolInfoRefId>\n" +
       "  <AddressList>\n" +
-      "    <Address Type="0123" Role="012B">\n" +
+      '    <Address Type="0123" Role="012B">\n' +
       "      <Street>\n" +
       "        <Line1>1 Address Street</Line1>\n" +
       "      </Street>\n" +
@@ -32,7 +32,7 @@ var hitsclient = (function(_app) {
       "    </Address>\n" +
       "  </AddressList>\n" +
       "  <PhoneNumberList>\n" +
-      "    <PhoneNumber Type="0096">\n" +
+      '    <PhoneNumber Type="0096">\n' +
       "      <Number>0894463125</Number>\n" +
       "    </PhoneNumber>\n" +
       "  </PhoneNumberList>\n" +
