@@ -256,7 +256,7 @@ var hitsclient = (function(_app) {
 			$("#putOneBody").parent("div").removeClass("has-error");
 		}
 
-		var refid = $("#putOneReferenceId").val();
+		var refId = $("#putOneReferenceId").val();
 		if (refId.length == 0) {
 			panelError("Please enter a Reference Id");
 			$("#putOneReferenceId").parent("div").addClass("has-error");
@@ -276,9 +276,7 @@ var hitsclient = (function(_app) {
 
 
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "/" + provider.value + "/" + refid;
-		args.url = args.url.slice(0, -1); // Strip plural provider name
-		//	args.contentType = "application/xml";
+		args.url = providerServer + "requests/" + provider.value + "/" + refId;
 		args.dataType = "XML";
 		args.type = "PUT";
 		var token = getTokenForAuth(sessionToken, password);
