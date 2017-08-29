@@ -18,7 +18,7 @@ BUGS / TASKS
 var hitsclient = (function(_app) {
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
 	// XXX Make this configurable like the others.
-	var providerServer = "http://hits.nsip.edu.au/SIF3InfraREST/hits/";
+	var providerServer = window.location.protocol + "//hits.nsip.edu.au/SIF3InfraREST/hits/";
 	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
