@@ -7,6 +7,8 @@ var hitsclient = (function(_app) {
     name : "Student Personal (naplan)",
     value : "StudentPersonals",
     template : 
+      "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
+      "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
       "<StudentPersonal>\n" + 
       "  <LocalId>coqqg649</LocalId>\n" + 
       "  <StateProvinceId>94931</StateProvinceId>\n" + 
