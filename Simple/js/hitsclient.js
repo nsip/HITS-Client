@@ -16,9 +16,11 @@ BUGS / TASKS
 
 */
 var hitsclient = (function(_app) {
+
 	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
 	// XXX Make this configurable like the others.
-	var providerServer = window.location.protocol + "//hits.nsip.edu.au/SIF3InfraREST/hits/";
+	var providerServer = (window.location.protocol === "file:" ? "https:" : window.location.protocol)  + "//hits.nsip.edu.au/SIF3InfraREST/hits/";
+	var namespace = "http://www.sifassociation.org/datamodel/au/3.4";
 	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
@@ -268,10 +270,9 @@ var hitsclient = (function(_app) {
 		var args = {};
 
 		var single = provider.value.slice(0, -1);
-		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
-			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
+			body = body.replace(headerRegExp, "$1 xmlns=\"" + namespace + "\"\>");
 		}
 
 
@@ -305,10 +306,9 @@ var hitsclient = (function(_app) {
 		var args = {};
 
 		var single = provider.value.slice(0, -1);
-		var namespace = 'xmlns="http://www.sifassociation.org/au/datamodel/3.4"';
 		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
 		if (body.indexOf("xmlns") < 0) {
-			body = body.replace(headerRegExp, "$1 " + namespace + "\>");
+			body = body.replace(headerRegExp, "$1 xmlns=\"" + namespace + "\"\>");
 		}
 
 		args.callback = executeCallback;
