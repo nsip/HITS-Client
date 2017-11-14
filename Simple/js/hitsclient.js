@@ -17,11 +17,8 @@ BUGS / TASKS
 */
 var hitsclient = (function(_app) {
 
-	// var providerServer = "http://hits.dev.nsip.edu.au:8080/SIF3InfraREST/hits/";
 	// XXX Make this configurable like the others.
-	var providerServer = (window.location.protocol === "file:" ? "https:" : window.location.protocol)  + "//hits.nsip.edu.au/SIF3InfraREST/hits/";
 	var namespace = "http://www.sifassociation.org/datamodel/au/3.4";
-	// var providerServer = "http://localhost:8080/SIF3InfraREST/hits/";
 
 	var methods = [];
 	var loadMethodValues = function() {
@@ -113,7 +110,7 @@ var hitsclient = (function(_app) {
 		console.log(body);
 		var args = {};
 		args.callback = getSessionTokenCallback;
-		args.url = providerServer + "environments/environment";
+		args.url = $("#providerServer").val() + "environments/environment";
 		args.data = body;
 		args.dataType = "XML";
 		//	args.contentType = "application/xml";
@@ -277,7 +274,7 @@ var hitsclient = (function(_app) {
 
 
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "/" + refId;
+		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + refId;
 		args.dataType = "XML";
 		args.type = "PUT";
 		var token = getTokenForAuth(sessionToken, password);
@@ -312,7 +309,7 @@ var hitsclient = (function(_app) {
 		}
 
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "/" + provider.value;
+		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + provider.value;
 		args.url = args.url.slice(0, -1); // Strip plural provider name
 		//	args.contentType = "application/xml";
 		args.dataType = "XML";
@@ -341,7 +338,7 @@ var hitsclient = (function(_app) {
 
 		var args = {};
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "/" + referenceId;
+		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + referenceId;
 		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "GET";
@@ -379,7 +376,7 @@ var hitsclient = (function(_app) {
 
 		var args = {};
 		args.callback = executeCallback;
-		args.url = providerServer + "requests/" + provider.value + "?navigationPage=" + page + "&navigationPageSize=" + recordsPerPage;
+		args.url = $("#providerServer").val() + "requests/" + provider.value + "?navigationPage=" + page + "&navigationPageSize=" + recordsPerPage;
 		//	args.contentType = "application/xml";
 		args.dataType = "XML";
 		args.type = "GET";
@@ -470,6 +467,19 @@ var hitsclient = (function(_app) {
 		$("#method").on("change", showParameters);
 	};
 
+	var determineServerUrl = function(servers) {
+		var protocol = window.location.protocol;
+		if (protocol === "file:") protocol = "https:";
+		var server = false;
+		for (var i = 0; !server && i < servers.length; i++) {
+			if (window.location.href.indexOf(servers[i]) > -1) {
+				server = servers[i];
+			}
+		}
+		if (!server) server = servers[0];
+		return protocol + "//" + server  + "/SIF3InfraREST/hits/";
+	};
+
 	_app.ready = function() {
 		populateProviders();
 		loadMethodValues();
@@ -479,7 +489,13 @@ var hitsclient = (function(_app) {
 		var providerServer = $.url().param('providerServer');
 		if (providerServer) {
 			$('#providerServer').val(providerServer);
-		}
+		} else {
+			var productionServer = "hits.nsip.edu.au";
+			var preProdServer = "hitstest.dev.nsip.edu.au";
+			var devServer = "localhost:8181";
+			var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
+			$("#providerServer").val(currentServer);
+	    }
 
 		// Load School REF ID - Backwards compatibile
 		var school_id = $.url().param('school_id');
