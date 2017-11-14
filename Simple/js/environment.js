@@ -1,15 +1,15 @@
 var hitsclient = (function(_app) {
 
   var template =
-      "<environment xmlns=\"http://www.sifassociation.org/infrastructure/3.0.1\">\n" +
+      "<environment xmlns=\"http://www.sifassociation.org/infrastructure/3.2.1\">\n" +
       "  <solutionId>${SOLUTION_ID}</solutionId>\n" +
       "  <authenticationMethod>Basic</authenticationMethod>\n" +
       "  <userToken>${USER_TOKEN}</userToken>\n" +
       "  <consumerName>TestConsumer</consumerName>\n" +
       "  <applicationInfo>\n" +
       "    <applicationKey>${APPLICATION_KEY}</applicationKey>\n" +
-      "    <supportedInfrastructureVersion>3.0.1</supportedInfrastructureVersion>\n" +
-      "    <dataModelNamespace>http://www.sifassociation.org/au/datamodel/1.3</dataModelNamespace>\n" +
+      "    <supportedInfrastructureVersion>3.2.1</supportedInfrastructureVersion>\n" +
+      "    <dataModelNamespace>http://www.sifassociation.org/datamodel/au/3.4</dataModelNamespace>\n" +
       "    <transport>REST</transport>\n" +
       "    <applicationProduct>\n" +
       "      <vendorName>NSIP</vendorName>\n" +
