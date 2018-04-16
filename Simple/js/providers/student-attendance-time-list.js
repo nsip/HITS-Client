@@ -16,39 +16,73 @@ var hitsclient = (function(_app) {
           "  <SchoolYear>2003</SchoolYear>\n" +
           "  <AttendanceTimes>\n" +
           "    <AttendanceTime>\n" +
-          "      <AttendanceCode>\n" +
-          "        <Code>200</Code>\n" +
-          "        <OtherCodeList>\n" +
-          "          <OtherCode Codeset=\"Local\">S</OtherCode>\n" +
-          "          <OtherCode Codeset=\"Text\">C</OtherCode>\n" +
-          "        </OtherCodeList>\n" +
-          "      </AttendanceCode>\n" +
-          "      <AttendanceStatus>01</AttendanceStatus>\n" +
-          "      <StartTime>11:00:00</StartTime>\n" +
-          "      <EndTime>12:05:00</EndTime>\n" +
-          "      <AbsenceValue>0.167</AbsenceValue>\n" +
-          "      <AttendanceNote>Left for Orthodontist appt. and returned to school afterward</AttendanceNote>\n" +
-          "    </AttendanceTime>\n" +
-          "    <AttendanceTime>\n" +
+          "      <AttendanceType>RC</AttendanceType>\n" +
           "      <AttendanceCode>\n" +
           "        <Code>100</Code>\n" +
           "      </AttendanceCode>\n" +
-          "      <AttendanceStatus>01</AttendanceStatus>\n" +
+          "      <AttendanceStatus>NA</AttendanceStatus>\n" +
           "      <StartTime>09:00:00</StartTime>\n" +
-          "      <EndTime>11:00:00</EndTime>\n" +
-          "      <AttendanceNote />\n" +
+          "      <EndTime>15:00:00</EndTime>\n" +
+          "      <DurationValue>1.000</DurationValue>\n" +
           "    </AttendanceTime>\n" +
           "    <AttendanceTime>\n" +
+          "      <AttendanceType>LA</AttendanceType>\n" +
           "      <AttendanceCode>\n" +
-          "        <Code>100</Code>\n" +
+          "        <Code>102</Code>\n" +
           "      </AttendanceCode>\n" +
-          "      <AttendanceStatus>01</AttendanceStatus>\n" +
-          "      <StartTime>12:05:00</StartTime>\n" +
-          "      <EndTime>15:30:00</EndTime>\n" +
+          "      <AttendanceStatus>02</AttendanceStatus>\n" +
+          "      <StartTime>09:00:00</StartTime>\n" +
+          "      <EndTime>09:30:00</EndTime>\n" +
+          "      <AttendanceNote>No acceptable excuse given</AttendanceNote>\n" +
           "    </AttendanceTime>\n" +
           "  </AttendanceTimes>\n" +
-          "</StudentAttendanceTimeList>"
-  });
+          "  <PeriodAttendances>\n" +
+          "    <PeriodAttendance>\n" +
+          "      <AttendanceType>CR</AttendanceType>\n" +
+          "      <AttendanceCode>\n" +
+          "        <Code>102</Code>\n" +
+          "      </AttendanceCode>\n" +
+          "      <AttendanceStatus>02</AttendanceStatus>\n" +
+          "      <TimetablePeriod>P1</TimetablePeriod>\n" +
+          "      <DayId>1</DayId>\n" +
+          "      <StartTime>09:00:00</StartTime>\n" +
+          "      <EndTime>10:00:00</EndTime>\n" +
+          "      <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
+          "      <TeacherList>\n" +
+          "        <TeacherCover>\n" +
+          "          <StaffPersonalRefId>{RefId}</StaffPersonalRefId>\n" +
+          "        </TeacherCover>\n" +
+          "        <TeacherCover>\n" +
+          "          <StaffPersonalRefId>{RefId}</StaffPersonalRefId>\n" +
+          "        </TeacherCover>\n" +
+          "      </TeacherList>\n" +
+          "      <RoomList>\n" +
+          "        <RoomInfoRefId>{RefId}</RoomInfoRefId>\n" +
+          "      </RoomList>\n" +
+          "    </PeriodAttendance>\n" +
+          "    <PeriodAttendance>\n" +
+          "      <AttendanceType>CR</AttendanceType>\n" +
+          "      <AttendanceCode>\n" +
+          "        <Code>100</Code>\n" +
+          "      </AttendanceCode>\n" +
+          "      <AttendanceStatus>NA</AttendanceStatus>\n" +
+          "      <TimetablePeriod>P2</TimetablePeriod>\n" +
+          "      <DayId>1</DayId>\n" +
+          "      <StartTime>10:00:00</StartTime>\n" +
+          "      <EndTime>11:00:00</EndTime>\n" +
+          "      <TimeTableSubjectRefId>{RefId}</TimeTableSubjectRefId>\n" +
+          "      <TeacherList>\n" +
+          "        <TeacherCover>\n" +
+          "          <StaffPersonalRefId>{RefId}</StaffPersonalRefId>\n" +
+          "        </TeacherCover>\n" +
+          "      </TeacherList>\n" +
+          "      <RoomList>\n" +
+          "        <RoomInfoRefId>{RefId}</RoomInfoRefId>\n" +
+          "      </RoomList>\n" +
+          "    </PeriodAttendance>\n" +
+          "  </PeriodAttendances>\n" +
+          "</StudentAttendanceTimeList>\n"
+});
 
   return _app;  
 }(hitsclient || {}));
