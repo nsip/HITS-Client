@@ -21,7 +21,6 @@ var hitsclient = (function(_app) {
       "  <ApprovedDate>2015-06-22</ApprovedDate>\n" +
       "  <CreatedBy>James Smith</CreatedBy>\n" +
       "  <ApprovedBy>John Smith</ApprovedBy>\n" +
-      "  <FinancialClassificationRefId>{RefId}</FinancialClassificationRefId>\n" +
       "</Journal>"
   });
 
