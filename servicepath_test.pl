@@ -3,63 +3,65 @@
 use LWP::Curl;
 $token = $ARGV[0]; # set token
 
+$baseURL = "http://hitstest.dev.nsip.edu.au";
+
 @paths = qw(
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentContactRelationships?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals/{STUDENTPERSONAL}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentSchoolEnrollments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTableCells?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTableSubjects?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTables?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/SchoolInfos/{SCHOOLINFO}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/StaffPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/StudentPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/TimeTableSubjects/{TIMETABLESUBJECT}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceSummarys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceTimeLists?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/FinancialAccounts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/VendorInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/ChargedLocationInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Invoices?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/PaymentReceipts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/PurchaseOrders?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Journals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/GradingAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/TeachingGroup/{TEACHINGGROUP}/GradingAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/GradingAssignmentScores?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPTestScoreSummarys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPStudentResponseSets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPEventStudentLinks?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/NAPStudentResponseSets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/NAPEventStudentLinks?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals/{STUDENTPERSONAL}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentContactRelationships?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffPersonals/{STAFFPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/StaffAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/SchoolInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/PurchaseOrders/{PURCHASEORDER}/Invoices?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/Invoices/{INVOICE}/PaymentReceipts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/ChargedLocationInfos/{CHARGEDLOCATIONINFO}/FinancialAccounts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/StudentContactPersonals/{STUDENTCONTACTPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/VendorInfos/{VENDORINFO}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/GradingAssignments/{GRADINGASSIGNMENT}/GradingAssignmentScores?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/NAPTests/{NAPTEST}/NAPTestlets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
-http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/NAPTests/{NAPTEST}/NAPTestItems?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentContactRelationships?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals/{STUDENTPERSONAL}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentSchoolEnrollments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTableCells?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTableSubjects?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/TimeTables?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/SchoolInfos/{SCHOOLINFO}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentDailyAttendances?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/ScheduledActivitys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/StaffPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/StudentPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/TimeTableSubjects/{TIMETABLESUBJECT}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceSummarys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceTimeLists?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/FinancialAccounts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/VendorInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/ChargedLocationInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Invoices?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/PaymentReceipts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/PurchaseOrders?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/Journals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/GradingAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/TeachingGroup/{TEACHINGGROUP}/GradingAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/GradingAssignmentScores?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPTestScoreSummarys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPStudentResponseSets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/NAPEventStudentLinks?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/NAPStudentResponseSets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/NAPEventStudentLinks?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals/{STUDENTPERSONAL}/StudentContactPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentContactRelationships?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffPersonals/{STAFFPERSONAL}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/StaffAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StaffPersonals/{STAFFPERSONAL}/SchoolInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/PurchaseOrders/{PURCHASEORDER}/Invoices?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/Invoices/{INVOICE}/PaymentReceipts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/ChargedLocationInfos/{CHARGEDLOCATIONINFO}/FinancialAccounts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/StudentContactPersonals/{STUDENTCONTACTPERSONAL}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/VendorInfos/{VENDORINFO}/Debtors?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/GradingAssignments/{GRADINGASSIGNMENT}/GradingAssignmentScores?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/NAPTests/{NAPTEST}/NAPTestlets?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/NAPTests/{NAPTEST}/NAPTestItems?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 );
 
 
@@ -103,6 +105,7 @@ $napstudentresponseset_refid = post("NAPStudentResponseSet", qq{ <NAPStudentResp
 $failed = 0;
 foreach $url (@paths) {
   $url =~ s/\{TOKEN\}/$token/;
+  $url =~ s/\{BASEURL\}/$baseURL/;
   $url =~ s/\{STUDENTPERSONAL\}/$studentpersonal_refid/;
   $url =~ s/\{SCHOOLINFO\}/$schoolinfo_refid/;
   $url =~ s/\{STAFFPERSONAL\}/$staffpersonal_refid/;
@@ -129,7 +132,7 @@ printf "%d service path queries failed out of %d\n", $failed, scalar @paths;
 
 sub post($$$) {
   my ($object, $body, $refid) = @_;
-  my $curl = `curl -i -X POST 'http://hitstest.dev.nsip.edu.au/SIF3InfraREST/hits/requests/${object}s/$object?access_token=$token&authenticationMethod=Basic' -d '$body'`;
+  my $curl = `curl -i -X POST '$baseURL/SIF3InfraREST/hits/requests/${object}s/$object?access_token=$token&authenticationMethod=Basic' -d '$body'`;
   my ($studentpersonal_refid) = $curl =~ m/<$object [^>]*$refid="([^"]+)"/;
   # die "no $object RefId returned from post\n" unless $studentpersonal_refid;
   return $studentpersonal_refid;
