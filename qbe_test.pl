@@ -54,7 +54,7 @@ $napstudentresponseset_refid = post("NAPStudentResponseSet", qq{ <NAPStudentResp
   "StudentAttendanceSummary" =>
   [ "<StudentAttendanceSummary StudentPersonalRefId='{STUDENTPERSONAL}'></StudentAttendanceSummary>", "<StudentAttendanceSummary><StartDate>2014-11-17</StartDate></StudentAttendanceSummary", "<StudentAttendanceSummary<EndDate>2014-11-22</EndDate></StudentAttendanceSummary", "<StudentAttendanceSummary<SchoolYear>2014</SchoolYear></StudentAttendanceSummary", ],
   "StudentAttendanceTimeList" =>
-  [ "<StudentPersonalRefId>{STUDENTPERSONAL}</StudentPersonalRefId>", "<Date>2002-11-01</Date>", "<SchoolYear>2013</SchoolYear>", ],
+  [ "<StudentPersonalRefId>{STUDENTPERSONAL}</StudentPersonalRefId>", "<Date>2002-11-01</Date>", "<SchoolYear>2003</SchoolYear>", ],
   "Invoice" =>
   [ "<FormNumber>8BC001</FormNumber>", "<BillingDate>2015-07-01</BillingDate>", "<DueDate>2015-10-22</DueDate>", ],
   "PaymentReceipt" =>
