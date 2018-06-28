@@ -4,6 +4,7 @@ use LWP::Curl;
 $token = $ARGV[0]; # set token
 
 $baseURL = "http://hitstest.dev.nsip.edu.au";
+#$baseURL = "http://hits.nsip.edu.au";
 
 @paths = qw(
 {BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StaffAssignments?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
@@ -132,8 +133,9 @@ printf "%d service path queries failed out of %d\n", $failed, scalar @paths;
 
 sub post($$$) {
   my ($object, $body, $refid) = @_;
+  print qq<curl -i -X POST '$baseURL/SIF3InfraREST/hits/requests/${object}s/$object?access_token=$token&authenticationMethod=Basic' -d '$body'>;
   my $curl = `curl -i -X POST '$baseURL/SIF3InfraREST/hits/requests/${object}s/$object?access_token=$token&authenticationMethod=Basic' -d '$body'`;
   my ($studentpersonal_refid) = $curl =~ m/<$object [^>]*$refid="([^"]+)"/;
-  # die "no $object RefId returned from post\n" unless $studentpersonal_refid;
+  die "no $object RefId returned from post\n" unless $studentpersonal_refid or ($object eq "StudentAttendanceTimeList" or $object eq "NAPTestlet" or $object eq "NAPStudentResponseSet");
   return $studentpersonal_refid;
 }
