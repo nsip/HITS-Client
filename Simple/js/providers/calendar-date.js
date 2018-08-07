@@ -6,10 +6,15 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name : "Calendar Date",
     value : "CalendarDates",
+    templateQBE : "" +
+          "<CalendarDate>\n" +
+          "  <SchoolYear>2014</SchoolYear>\n" +
+          "</CalendarDate>",
     template : "" +
           "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
           "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-          "<CalendarDate CalendarSummaryRefId='{RefId}' Date='2014-11-06'>\n" +
+          "<CalendarDate CalendarSummaryRefId='{RefId}'>\n" + 
+          "  <Date>2014-11-06</Date>\n" +
           "  <SchoolInfoRefId>{RefId}</SchoolInfoRefId>\n" +
           "  <SchoolYear>2014</SchoolYear>\n" +
           "  <CalendarDateType>\n" +

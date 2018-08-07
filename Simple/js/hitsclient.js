@@ -19,42 +19,64 @@ var hitsclient = (function(_app) {
 
 	// XXX Make this configurable like the others.
 	var namespace = "http://www.sifassociation.org/datamodel/au/3.4";
+	var infraNamespace = "http://www.sifassociation.org/infrastructure/3.2.1";
 
 	var methods = [];
-	var loadMethodValues = function() {
-		methods.push({
-			name: "Get One",
-			executeMethod: executeGetOne,
-			parameterBody: "getOne"
-		});
-		methods.push({
-			name: "Get Many",
-			executeMethod: executeGetMany,
-			parameterBody: "getMany"
-		});
-		methods.push({
-			name: "Post One",
-			executeMethod: executePostOne,
-			parameterBody: "postOne"
-		});
-		methods.push({
-			name: "Put One",
-			executeMethod: executePutOne,
-			parameterBody: "putOne"
-		});
-	};
 
-	/* TODO Consider using timestamp (although, is uuid needed?)
-		function generateUUID(){
-		    var d = new Date().getTime();
-		    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-			var r = (d + Math.random()*16)%16 | 0;
-			d = Math.floor(d/16);
-			return (c=='x' ? r : (r&0x7|0x8)).toString(16);
-		    });
-		    return uuid;
-		};	
-	*/
+	var loadMethodValues = function() {
+	    methods = [{
+			name: "Get One",
+			executeMethod: _app.sif.getOne,
+			parameterBody: prepareGetOne
+		},
+		{
+			name: "Get Many",
+			executeMethod: _app.sif.getMany,
+			parameterBody: prepareGetMany
+		},
+		{
+			name: "Query by Service Path",
+			executeMethod: _app.sif.getByServicePath,
+			parameterBody: prepareGetByServicePath,
+			requiredProperties : ["servicePaths"]
+		},
+		{
+			name: "Query by Example",
+			executeMethod: _app.sif.getByQBE,
+			parameterBody: prepareGetByQBE
+		},
+		{
+			name: "Create One",
+			executeMethod: _app.sif.createOne,
+			parameterBody: prepareCreateOne
+		},
+		{
+			name: "Create Many",
+			executeMethod: _app.sif.createMany,
+			parameterBody: prepareCreateMany
+		},
+		{
+			name: "Update One",
+			executeMethod: _app.sif.updateOne,
+			parameterBody: prepareUpdateOne
+		},
+		{
+			name: "Update Many",
+			executeMethod: _app.sif.updateMany,
+			parameterBody: prepareUpdateMany
+		},
+		{
+			name: "Delete One",
+			executeMethod: _app.sif.deleteOne,
+			parameterBody: prepareDeleteOne
+		},
+		{
+			name: "Delete Many",
+			executeMethod: _app.sif.deleteMany,
+			parameterBody: prepareDeleteMany
+		}];
+	};
+	
 	var uuid = function() {
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 			var r = Math.random() * 16 | 0,
@@ -62,6 +84,7 @@ var hitsclient = (function(_app) {
 			return v.toString(16);
 		});
 	};
+	_app.uuid = uuid;
 
 	// TODO Consider using done instead of success
 	var ajax = function(args) {
@@ -75,6 +98,7 @@ var hitsclient = (function(_app) {
 		};
 		$.ajax(args);
 	};
+	_app.ajax = ajax;
 
 	var ajaxSuccess = function(result, status, xhr, args, callback) {
 		if (callback) {
@@ -105,107 +129,25 @@ var hitsclient = (function(_app) {
 		$(".container .row:first").html(div);
 	};
 
-	var getSessionToken = function(solutionId, applicationKey, userToken, password) {
-		var body = hitsclient.environment.getDetailed(solutionId, applicationKey, userToken);
-		console.log(body);
-		var args = {};
-		args.callback = getSessionTokenCallback;
-		args.url = $("#providerServer").val() + "environments/environment";
-		args.data = body;
-		args.dataType = "XML";
-		//	args.contentType = "application/xml";
-		args.type = "POST";
-		var token = getTokenForAuth(applicationKey, password);
-		args.headers = {};
-		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = token.method + " " + token.value;
-		if (token.timestamp) {
-			args.headers["timestamp"] = token.timestamp;
-		}
-		args.notifier = executeCall;
-		ajax(args);
-	};
-
-	var getTokenForAuth = function(userPart, passPart) {
-		var method = $("#authentication-method").val();
-		var token = {
-			method: "",
-			value: ""
-		};
-		if (method === "SIF_HMACSHA256") {
-			token.timestamp = new moment().toISOString();
-			token.method = method;
-			var value = userPart + ":" + CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(userPart + ":" + token.timestamp, passPart));
-			value = Base64.encode(value);
-			token.value = value;
-		} else {
-			var value = userPart + ":" + passPart;
-			value = Base64.encode(value);
-			token.value = value;
-			token.method = "Basic";
-		}
-		return token;
-	}
-
-	var getSessionTokenCallback = function(xhr, status, result, reason, args) {
-		if (xhr.status == 409 || xhr.status == 201) {
-			var sessionToken = getFirstXmlTagContents(xhr.responseText, "sessionToken");
-			$("#sessionToken").val(sessionToken);
-			args.notifier.call(this);
-		} else {
-			var message = getFirstXmlTagContents(xhr.responseText, "message");
-			if (message == null) {
-				message = "Status " + xhr.status + " (" + reason + ")";
-			}
-			panelError(message);
-		}
-	};
-
 	var validateEnvironment = function() {
 		// Need either Session Token or Full Details
-		var sessionValid = false;
-		var sessionToken = $("#sessionToken").val();
-		if (sessionToken.length > 0) {
-			sessionValid = true;
+		var inputFields = $("input[data-required=true]");
+		var result = true;
+		var error = "";
+		for (var i = 0; i < inputFields.length; i++) {
+			var $field = $(inputFields[i]);
+			if ($field.val().length === 0) {
+				$field.parent("div").addClass("has-error");
+				if (error === "") {
+					error = "Please enter a " + $field.data("name");
+					panelError(error);
+				}
+				result = false;
+			} else {
+				$field.parent("div").removeClass("has-error");
+			}
 		}
-		var solutionId = $("#solutionId").val();
-		if (!sessionValid && solutionId.length == 0) {
-			panelError("Please enter a Solution Id");
-			$("#solutionId").parent("div").addClass("has-error");
-			return false;
-		} else {
-			$("#solutionId").parent("div").removeClass("has-error");
-		}
-		var applicationKey = $("#applicationKey").val();
-		if (!sessionValid && applicationKey.length == 0) {
-			panelError("Please enter an Application Key");
-			$("#applicationKey").parent("div").addClass("has-error");
-			return false;
-		} else {
-			$("#applicationKey").parent("div").removeClass("has-error");
-		}
-		var userToken = $("#userToken").val();
-		if (!sessionValid && userToken.length == 0) {
-			panelError("Please enter a User Token");
-			$("#userToken").parent("div").addClass("has-error");
-			return false;
-		} else {
-			$("#userToken").parent("div").removeClass("has-error");
-		}
-		var password = $("#password").val();
-		if (password.length == 0) {
-			panelError("Please enter a Password");
-			$("#password").parent("div").addClass("has-error");
-			return false;
-		} else {
-			$("#password").parent("div").removeClass("has-error");
-		}
-		var sessionToken = $("#sessionToken").val();
-		if (sessionToken.length == 0) {
-			getSessionToken(solutionId, applicationKey, userToken, password);
-			return false;
-		}
-		return true;
+		return result;
 	}
 
 	var validateProvider = function() {
@@ -236,159 +178,14 @@ var hitsclient = (function(_app) {
 
 	var executeCall = function() {
 		if (validateEnvironment() && validateProvider() && validateMethod()) {
-			var zoneId = $("#userToken").val();
-			var password = $("#password").val();
-			var sessionToken = $("#sessionToken").val();
 			var provider = $("#provider option:selected").data("provider");
+			var servicePath = $("#servicePath option:selected").data("service-path");
 			var method = $("#method option:selected").data("method");
-			method.executeMethod.call(this, zoneId, password, sessionToken, provider, method);
+			var args = getParameters(provider);
+			args.provider = provider;
+			args.servicePath = servicePath;
+			method.executeMethod.call(this, args, executeCallback);
 		}
-	};
-
-	var executePutOne = function(zoneId, password, sessionToken, provider, method) {
-		var body = $("#putOneBody").val();
-		if (body.length == 0) {
-			panelError("Please enter a XML Body");
-			$("#putOneBody").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#putOneBody").parent("div").removeClass("has-error");
-		}
-
-		var refId = $("#putOneReferenceId").val();
-		if (refId.length == 0) {
-			panelError("Please enter a Reference Id");
-			$("#putOneReferenceId").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#putOneReferenceId").parent("div").removeClass("has-error");
-		}
-
-		var args = {};
-
-		var single = provider.value.slice(0, -1);
-		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
-		if (body.indexOf("xmlns") < 0) {
-			body = body.replace(headerRegExp, "$1 xmlns=\"" + namespace + "\"\>");
-		}
-
-
-		args.callback = executeCallback;
-		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + refId;
-		args.dataType = "XML";
-		args.type = "PUT";
-		var token = getTokenForAuth(sessionToken, password);
-		args.token = token;
-		args.headers = {};
-		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = token.method + " " + token.value;
-		if (token.timestamp) {
-			args.headers["timestamp"] = token.timestamp;
-		}
-		args.data = body;
-		ajax(args);
-	}
-
-
-	var executePostOne = function(zoneId, password, sessionToken, provider, method) {
-		var body = $("#postOneBody").val();
-		if (body.length == 0) {
-			panelError("Please enter a XML Body");
-			$("#postOneBody").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#postOneBody").parent("div").removeClass("has-error");
-		}
-
-		var args = {};
-
-		var single = provider.value.slice(0, -1);
-		var headerRegExp = new RegExp("(\<" + single + "[^\>]*)\>");
-		if (body.indexOf("xmlns") < 0) {
-			body = body.replace(headerRegExp, "$1 xmlns=\"" + namespace + "\"\>");
-		}
-
-		args.callback = executeCallback;
-		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + provider.value;
-		args.url = args.url.slice(0, -1); // Strip plural provider name
-		//	args.contentType = "application/xml";
-		args.dataType = "XML";
-		args.type = "POST";
-		var token = getTokenForAuth(sessionToken, password);
-		args.token = token;
-		args.headers = {};
-		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = token.method + " " + token.value;
-		if (token.timestamp) {
-			args.headers["timestamp"] = token.timestamp;
-		}
-		args.data = body;
-		ajax(args);
-	};
-
-	var executeGetOne = function(zoneId, password, sessionToken, provider, method) {
-		var referenceId = $("#getOneReferenceId").val();
-		if (referenceId.length == 0) {
-			panelError("Please enter a Reference Id");
-			$("#getOneReferenceId").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#getOneReferenceId").parent("div").removeClass("has-error");
-		}
-
-		var args = {};
-		args.callback = executeCallback;
-		args.url = $("#providerServer").val() + "requests/" + provider.value + "/" + referenceId;
-		//	args.contentType = "application/xml";
-		args.dataType = "XML";
-		args.type = "GET";
-		var token = getTokenForAuth(sessionToken, password);
-		args.token = token;
-		args.headers = {};
-		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = token.method + " " + token.value;
-		if (token.timestamp) {
-			args.headers["timestamp"] = token.timestamp;
-		}
-		ajax(args);
-	};
-
-	var executeGetMany = function(zoneId, password, sessionToken, provider, method) {
-		var recordsPerPage = $("#getManyRecordsPerPage").val();
-		if (recordsPerPage.length == 0) {
-			panelError("Please enter a value for Records per Page");
-			$("#getManyRecordsPerPage").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#getManyRecordsPerPage").parent("div").removeClass("has-error");
-		}
-		var page = $("#getManyPage").val();
-		if (recordsPerPage.length == 0) {
-			panelError("Please enter a value for Page Number");
-			$("#getManyPage").parent("div").addClass("has-error");
-			return;
-		} else {
-			$("#getManyPage").parent("div").removeClass("has-error");
-		}
-		page = new Number(page);
-		if (page < 1) page = 1;
-
-
-		var args = {};
-		args.callback = executeCallback;
-		args.url = $("#providerServer").val() + "requests/" + provider.value + "?navigationPage=" + page + "&navigationPageSize=" + recordsPerPage;
-		//	args.contentType = "application/xml";
-		args.dataType = "XML";
-		args.type = "GET";
-		var token = getTokenForAuth(sessionToken, password);
-		args.token = token;
-		args.headers = {};
-		args.headers["Content-Type"] = "application/xml";
-		args.headers["Authorization"] = token.method + " " + token.value;
-		if (token.timestamp) {
-			args.headers["timestamp"] = token.timestamp;
-		}
-		ajax(args);
 	};
 
 	var executeCallback = function(xhr, status, result, reason, args) {
@@ -396,10 +193,10 @@ var hitsclient = (function(_app) {
 		console.log(status);
 		console.log(result);
 		console.log(reason);
-		$(".container .row:first").html("");
 		$("#responseStatus").text(xhr.status);
 		$("#responseStatusText").text(xhr.statusText);
 		$("#response").text(xhr.responseText);
+		$("#requestType").text(args.type);
 		var newUrl = args.url;
 		if (args.url.indexOf("\?") > 0) {
 			newUrl = newUrl + '&access_token=' + args.token.value;
@@ -410,61 +207,55 @@ var hitsclient = (function(_app) {
 		if (args.token.timestamp) {
 			newUrl += '&timestamp=' + args.token.timestamp;
 		}
-		$('#responseURL').text(newUrl);
-		$('#responseURL').attr('href', newUrl);
-	};
-
-	var getFirstXmlTagContents = function(xmlDocument, xmlTag) {
-		var result = null;
-		var regularExpression = new RegExp("<" + xmlTag + ">([^<]*)<", "g");
-		var matches = regularExpression.exec(xmlDocument);
-		if (matches && matches != null && matches.length > 1) {
-			result = matches[1];
+		if (args.headers.navigationpage && args.headers.navigationpagesize) {
+			newUrl += "&navigationPage=" + args.headers.navigationpage + "&navigationPageSize=" + args.headers.navigationpagesize;
 		}
-		return result;
-	};
-
-	var showParameters = function() {
-		var methodOption = $("#method option:selected");
-		var providerOption = $("#provider option:selected");
-		var method = methodOption.data("method");
-		var provider = providerOption.data("provider");
-		$(".parameter-header").css("display", "none");
-		$(".parameter-block").css("display", "none");
-		if (method && method.parameterBody) {
-			$(".parameter-header").css("display", "");
-			$("#" + method.parameterBody).css("display", "");
+		if (args.type == _app.sif.methods.GET) {
+			$a = $("<a></a>");
+			$a.attr("href", newUrl);
+			$a.text(newUrl);
+			$("#responseURL").append($a);
+		} else {
+			$("#responseURL").text(args.url);
 		}
-		// Optional parameter values from Provider / Method combination
-		if (method && method.parameterBody == 'postOne') {
-			$("#postOneBody").val(provider.template ? provider.template : '');
-		}
-		if (method && method.parameterBody == 'putOne') {
-			$("#putOneBody").val(provider.template ? provider.template : '');
-		}
-
 	};
 
 	var populateProviders = function() {
 		$("#provider").html("<option></option>");
 		for (var i = 0; i < _app.providers.length; i++) {
 			var provider = _app.providers[i];
+			provider.single = provider.value.substr(0, provider.value.length - 1);
+			_app.providers[i] = provider;
 			var option = new Option(provider.name, provider.value);
 			$(option).data("provider", provider);
 			$("#provider").append(option);
 		}
-		$("#provider").on("change", showParameters);
 	};
 
 	var populateMethods = function() {
+		$(".service-path-item").hide();
 		$("#method").html("<option></option>");
-		for (var i = 0; i < methods.length; i++) {
-			var method = methods[i];
-			var option = new Option(method.name, method.value);
-			$(option).data("method", method);
-			$("#method").append(option);
+		var provider = $("#provider option:selected").data("provider");
+		if (provider) {
+			for (var i = 0; i < methods.length; i++) {
+				var method = methods[i];
+				if (validMethod(method, provider)) {
+					var option = new Option(method.name, method.value);
+					$(option).data("method", method);
+					$("#method").append(option);
+				}
+			}
 		}
-		$("#method").on("change", showParameters);
+	};
+
+	var validMethod = function(method, provider) {
+		var result = true;
+		if (method.requiredProperties) {
+			for (var i = 0; result && i < method.requiredProperties.length; i++) {
+				result = result && provider.hasOwnProperty(method.requiredProperties[i]);
+			}
+		}
+		return result;
 	};
 
 	var determineServerUrl = function(servers) {
@@ -483,20 +274,47 @@ var hitsclient = (function(_app) {
 	_app.ready = function() {
 		populateProviders();
 		loadMethodValues();
-		populateMethods();
+		if (!setup()) {
+			compatibileSetup();
+		}
+		createEnvironment();
 		$("#execute").on("click", executeCall);
+		$("#provider").on("change", populateMethods);
+		$("#method").on("change", populateParameters);
+		$("#servicePath").on("change", populateServicePath);
+		$(".service-path-item").hide();
+	};
 
-		var providerServer = $.url().param('providerServer');
-		if (providerServer) {
-			$('#providerServer').val(providerServer);
+	var setup = function() {
+		var result = true;
+		var productionServer = "hits.nsip.edu.au";
+		var preProdServer = "hitstest.dev.nsip.edu.au";
+		var devServer = "localhost:8181";
+		var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
+		$("#server").val(currentServer);
+		$("#solutionid").val("HITS");
+		if (true || $.cookie) {
+			var id = "8c5c4eb1-cf34-4e1e-a433-fdea12724085"; //$.cookie("hits2.id");
+			var dbid = "085f89e396614a028a3aaf81b4e459c9"; //$.cookie("hits2.dbid");
+			if (!id || !dbid) {
+				return false;
+			}
+			$.get("https://hits.nsip.edu.au/api/account/" + id + "/database/" + dbid).success(function(data) {
+				 $("#applicationkey").val(dbid);
+				 $("#usertoken").val(dbid);
+				 $("#password").val(dbid);
+				 $("#authmethod").val(data.data.auth_method == "hmac" ? "SIF_HMACSHA256" : "Basic");
+				 $("#sessiontoken").val(data.data.session);
+				 $("#environment").val(data.data.environment);
+			}).error(function() { result = false; });
 		} else {
-			var productionServer = "hits.nsip.edu.au";
-			var preProdServer = "hitstest.dev.nsip.edu.au";
-			var devServer = "localhost:8181";
-			var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
-			$("#providerServer").val(currentServer);
-	    }
+			result = false;
+		}
+		return result;
+	};
 
+	var compatibileSetup = function() {
+		// TODO : Remove, No Need for this anymore.
 		// Load School REF ID - Backwards compatibile
 		var school_id = $.url().param('school_id');
 		if (school_id) {
@@ -526,6 +344,158 @@ var hitsclient = (function(_app) {
 		    $('#authentication-method').val("Basic");
 		}
 	};
+
+	var createEnvironment = function() {
+		var sessionToken = $("#sessiontoken").val();
+		var environment = $("#environment").val();
+		var environmentDetails = {};
+		if (!environment || !sessionToken) {
+			environmentDetails = _app.sif.createEnvironment(getParameters());
+		} else {
+			environmentDetails = _app.sif.getEnvironment(getParameters());
+		}
+		$("#sessiontoken").val(environmentDetails.sessionToken || sessionToken);
+		$("#environment").val(environmentDetails.environment || environment);
+		$("#fingerprint").val(environmentDetails.fingerprint);
+	};
+
+	var populateParameters = function() {
+		$(".service-path-item").hide();
+		$(".parameter-body").html("");
+		var method = $("#method option:selected").data("method");
+		var provider = $("#provider option:selected").data("provider");
+		$("#collapseParameterGroup").removeClass("in");
+		if (method && provider) {
+			$(".parameter-body").html("<ul class='list-group'></ul>");
+			method.parameterBody.call(this, provider);
+			$("#collapseParameterGroup").addClass("in");
+		} 
+	}
+
+	var populateServicePath = function() {
+		$(".parameter-body").html("");
+		var method = $("#method option:selected").data("method");
+		var provider = $("#provider option:selected").data("provider");
+		var servicePath = $("#servicePath option:selected").data("service-path");
+		$("#collapseParameterGroup").removeClass("in");
+		if (method && provider && servicePath) {
+			$(".parameter-body").html("<ul class='list-group'></ul>");
+			var objects = servicePath.split("/{}/");
+			for (var i = 0; i < objects.length - 1; i++) {
+				addParameter(objects[i].substr(0, objects[i].length - 1) + " Reference Id", objects[i] + "RefId", i == 0, "");
+			}
+			addParameter("Page", "navigationPage", false, "1");	
+			addParameter("Page Size", "navigationPageSize", false, "10");	
+			$("#collapseParameterGroup").addClass("in");
+		}
+	}
+
+	var getParameters = function(provider) {
+		var result = {};
+		$("form input").each(function(i, f) { result[$(f).attr("name")] = $(f).val(); });
+		var payload = $("form textarea[name=payload]").val();
+		if (payload) {
+			result.payload = payload;
+			if (provider && provider.single) {
+				var headerRegExp = new RegExp("(\<" + provider.single + "[^\>]*)\>");
+				if (payload.indexOf("xmlns") < 0) {
+					payload = payload.replace(headerRegExp, "$1 xmlns=\"" + namespace + "\"\>");
+				}
+				var deleteRegExp = new RegExp("(\<deleteRequest[^\>]*)\>");
+				if (payload.indexOf("xmlns") < 0) {
+					payload = payload.replace(deleteRegExp, "$1 xmlns=\"" + infraNamespace + "\"\>");
+				}
+				result.payload = payload;
+			}
+		}
+		return result;
+	};
+
+	var prepareGetOne = function() {
+		addParameter("Reference Id", "refId", true, "");
+	};
+
+	var prepareGetMany = function() {
+		addParameter("Page", "navigationPage", true, "1");	
+		addParameter("Page Size", "navigationPageSize", false, "10");	
+	};
+
+	var prepareGetByServicePath = function(provider) {
+		$("#servicePath").html("<option></option>");
+		for (var i = 0; i < provider.servicePaths.length; i++) {
+			var $option = $("<option>" + provider.servicePaths[i] + "</option>");
+			$option.data("service-path", provider.servicePaths[i]);
+			$("#servicePath").append($option);
+		}
+		$(".service-path-item").show();
+	};
+
+	var prepareGetByQBE = function(provider) {
+		addPayload("Body", "payload", true, 5, provider.templateQBE || "<" + provider.single + "></" + provider.single + ">");
+		addParameter("Page", "navigationPage", false, "1");	
+		addParameter("Page Size", "navigationPageSize", false, "10");	
+	};
+
+	var prepareCreateOne = function(provider) {
+		addPayload("Body", "payload", true, 10, provider.template || "<" + provider.single + "></" + provider.single + ">", true);
+	};
+
+	var prepareCreateMany = function(provider) {
+		var template = provider.template || "";
+		template = "<" + provider.value + ">\n" + template + "\n</" + provider.value + ">";
+		addPayload("Body", "payload", true, 10, template, true);
+	};
+
+	var prepareUpdateOne = function(provider) {
+		addParameter("Reference Id", "refId", true, "");
+		addPayload("Body", "payload", false, 10, provider.template || "<" + provider.single + "></" + provider.single + ">", true);
+	};
+
+	var prepareUpdateMany = function(provider) {
+		var template = provider.template || "";
+		template = "<" + provider.value + ">\n" + template + "\n</" + provider.value + ">";
+		addPayload("Body", "payload", true, 10, template, true);
+	};
+
+	var prepareDeleteOne = function() {
+		addParameter("Reference Id", "refId", true, "");
+	};
+
+	var prepareDeleteMany = function() {
+		addPayload("Body", "payload", false, 5,
+'<deleteRequest>\n' +
+'    <deletes>\n' +
+'        <delete id="{RefId}" />\n' +
+'    </deletes>\n' +
+'</deleteRequest>');			
+	};
+
+	var addParameter = function(label, name, first, defaultValue) {
+		var style = first ? 'border-left: none; border-right: none; border-bottom: none;' : 'border: none;';
+		var $container = $(".parameter-body ul");
+		var $item = $("<li class='list-group-item' style='" + style + "'></li>");
+		var $group = $("<div class='form-group'></div>");
+		$group.append("<label for='" + name + "'>" + label + "</label>");
+		$group.append("<input type='text' class='form-control' id='" + name + "' name='" + name + "' data-required='true' data-name='" + label + "' placeholder='" + label + "' value='" + defaultValue + "'>");
+		$item.append($group);
+		$container.append($item);
+	}
+
+	var addPayload = function(label, name, first, rows, defaultValue, warning) {
+		var style = first ? 'border-left: none; border-right: none; border-bottom: none;' : 'border: none;';
+		var $container = $(".parameter-body ul");
+		var $item = $("<li class='list-group-item' style='" + style + "'></li>");
+		var $group = $("<div class='form-group'></div>");
+		$group.append("<label for='" + name + "'>" + label + "</label>");
+		if (warning) {
+			$group.append("<p>Note: RefID attributes for SIF objects are mandatory when posting multiple records to an endpoint inside a single payload, and they are strongly recommended when posting a single record to an endpoint.</p>");
+		}
+		var $input = $("<textarea rows='" + rows + "' class='form-control' id='" + name + "' name='" + name + "' data-required='true' data-name='" + label + "' placeholder='" + label + "'></textarea>");
+		$input.val(defaultValue);
+		$group.append($input);
+		$item.append($group);
+		$container.append($item);
+	}
 
 	return _app;
 }(hitsclient || {}));

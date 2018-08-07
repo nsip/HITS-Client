@@ -6,6 +6,7 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name: "Journal",
     value: "Journals",
+    servicePaths: ["SchoolInfos/{}/Journals"],
     template: 
       "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
