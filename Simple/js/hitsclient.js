@@ -214,6 +214,7 @@ var hitsclient = (function(_app) {
 			$a = $("<a></a>");
 			$a.attr("href", newUrl);
 			$a.text(newUrl);
+			$("#responseURL").html("");
 			$("#responseURL").append($a);
 		} else {
 			$("#responseURL").text(args.url);
