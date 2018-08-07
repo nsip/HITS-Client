@@ -268,7 +268,7 @@ var hitsclient = (function(_app) {
 			}
 		}
 		if (!server) server = servers[0];
-		return protocol + "//" + server  + "/SIF3InfraREST/hits/";
+		return protocol + "//" + server;
 	};
 
 	_app.ready = function() {
@@ -294,7 +294,7 @@ var hitsclient = (function(_app) {
 		var preProdServer = "hitstest.dev.nsip.edu.au";
 		var devServer = "localhost:8181";
 		var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
-		$("#server").val(currentServer);
+		$("#server").val(currentServer + "/SIF3InfraREST/hits/");
 		$("#solutionid").val("HITS");
 		if ($.cookie) {
 			var id = $.cookie("hits2.id");
@@ -302,7 +302,7 @@ var hitsclient = (function(_app) {
 			if (!id || !dbid) {
 				finishSetup(false);
 			} else {
-			    $.get("https://hits.nsip.edu.au/api/account/" + id + "/database/" + dbid).success(function(data) {
+			    $.get(currentServer + "/api/account/" + id + "/database/" + dbid).success(function(data) {
 				     $("#applicationkey").val(dbid);
 				     $("#usertoken").val(dbid);
 				     $("#password").val(dbid);
