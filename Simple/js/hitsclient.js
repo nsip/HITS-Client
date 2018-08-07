@@ -279,6 +279,13 @@ var hitsclient = (function(_app) {
 		$("#provider").on("change", populateMethods);
 		$("#method").on("change", populateParameters);
 		$("#servicePath").on("change", populateServicePath);
+		$("#collapseServerHeading").on("click", function() {
+			if ($("#collapseServerGroup:visible").length == 0) {
+				$("#collapseServerGroup").addClass("in");
+			} else {
+				$("#collapseServerGroup").removeClass("in");
+			}
+		});
 		$(".service-path-item").hide();
 	};
 
