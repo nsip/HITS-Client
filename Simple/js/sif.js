@@ -14,7 +14,7 @@ var hitsclient = (function(_app) {
 	}
 	sif.methods = methods;
 
-	sif.createEnvironment = function(parameters) {
+	sif.createEnvironment = function(parameters, callback) {
 		var args = {
 			url : parameters.server + "environments/environment",
 			headers : getEnvironmentSIFHeaders(parameters),
@@ -25,12 +25,13 @@ var hitsclient = (function(_app) {
 		if (args.headers) {
 			$.ajax(args).success(function(result, status, xhr) { 
 				processEnvironment(xhr.responseText, data);
+				callback.call(this, data);
 			});
 		}	
 		return data;
 	};
 
-	sif.getEnvironment = function(parameters) {
+	sif.getEnvironment = function(parameters, callback) {
 		var args = {
 			url : parameters.server + "environments/" + parameters.environment,
 			headers : getStandardSIFHeaders(parameters),
@@ -42,6 +43,7 @@ var hitsclient = (function(_app) {
 		if (args.headers) {
 			$.ajax(args).success(function(result, status, xhr) { 
 				processEnvironment(xhr.responseText, data);
+				callback.call(this, data);
 			});
 		}
 		return data;

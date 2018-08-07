@@ -274,10 +274,7 @@ var hitsclient = (function(_app) {
 	_app.ready = function() {
 		populateProviders();
 		loadMethodValues();
-		if (!setup()) {
-			compatibileSetup();
-		}
-		createEnvironment();
+		setup();
 		$("#execute").on("click", executeCall);
 		$("#provider").on("change", populateMethods);
 		$("#method").on("change", populateParameters);
@@ -285,32 +282,39 @@ var hitsclient = (function(_app) {
 		$(".service-path-item").hide();
 	};
 
+	var finishSetup = function(complete) {
+		if (!complete) {
+			compatibileSetup();
+		}
+		createEnvironment();
+	}
+
 	var setup = function() {
-		var result = true;
 		var productionServer = "hits.nsip.edu.au";
 		var preProdServer = "hitstest.dev.nsip.edu.au";
 		var devServer = "localhost:8181";
 		var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
 		$("#server").val(currentServer);
 		$("#solutionid").val("HITS");
-		if (true || $.cookie) {
-			var id = "8c5c4eb1-cf34-4e1e-a433-fdea12724085"; //$.cookie("hits2.id");
-			var dbid = "085f89e396614a028a3aaf81b4e459c9"; //$.cookie("hits2.dbid");
+		if ($.cookie) {
+			var id = $.cookie("hits2.id");
+			var dbid = $.cookie("hits2.dbid");
 			if (!id || !dbid) {
-				return false;
+				finishSetup(false);
+			} else {
+			    $.get("https://hits.nsip.edu.au/api/account/" + id + "/database/" + dbid).success(function(data) {
+				     $("#applicationkey").val(dbid);
+				     $("#usertoken").val(dbid);
+				     $("#password").val(dbid);
+				     $("#authmethod").val(data.data.auth_method == "hmac" ? "SIF_HMACSHA256" : "Basic");
+				     $("#sessiontoken").val(data.data.session);
+				     $("#environment").val(data.data.environment);
+				     finishSetup(true);
+			    }).error(function() { finishSetup(false); });
 			}
-			$.get("https://hits.nsip.edu.au/api/account/" + id + "/database/" + dbid).success(function(data) {
-				 $("#applicationkey").val(dbid);
-				 $("#usertoken").val(dbid);
-				 $("#password").val(dbid);
-				 $("#authmethod").val(data.data.auth_method == "hmac" ? "SIF_HMACSHA256" : "Basic");
-				 $("#sessiontoken").val(data.data.session);
-				 $("#environment").val(data.data.environment);
-			}).error(function() { result = false; });
 		} else {
-			result = false;
+			finishSetup(false);
 		}
-		return result;
 	};
 
 	var compatibileSetup = function() {
@@ -348,16 +352,24 @@ var hitsclient = (function(_app) {
 	var createEnvironment = function() {
 		var sessionToken = $("#sessiontoken").val();
 		var environment = $("#environment").val();
-		var environmentDetails = {};
 		if (!environment || !sessionToken) {
-			environmentDetails = _app.sif.createEnvironment(getParameters());
+			_app.sif.createEnvironment(getParameters(), processEnvironment);
 		} else {
-			environmentDetails = _app.sif.getEnvironment(getParameters());
+			_app.sif.getEnvironment(getParameters(), processEnvironment);
 		}
-		$("#sessiontoken").val(environmentDetails.sessionToken || sessionToken);
-		$("#environment").val(environmentDetails.environment || environment);
-		$("#fingerprint").val(environmentDetails.fingerprint);
 	};
+
+	var processEnvironment = function(environmentDetails) {
+		if (environmentDetails.sessionToken) {
+			$("#sessiontoken").val(environmentDetails.sessionToken);
+		}
+		if (environmentDetails.environment) {
+			$("#environment").val(environmentDetails.environment);
+		}
+		if (environmentDetails.fingerprint) {
+			$("#fingerprint").val(environmentDetails.fingerprint);	
+		}
+	}
 
 	var populateParameters = function() {
 		$(".service-path-item").hide();
