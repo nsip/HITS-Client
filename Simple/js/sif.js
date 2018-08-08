@@ -21,6 +21,7 @@ var hitsclient = (function(_app) {
 			type : methods.POST,
 			datatype : "XML",
 		}
+		args.data = _app.environment.getDetailed(parameters.solutionId, parameters.applicationKey, parameters.userToken);
 		var data = {};
 		if (args.headers) {
 			$.ajax(args).success(function(result, status, xhr) { 
@@ -209,7 +210,7 @@ var hitsclient = (function(_app) {
 			headers.messageid = _app.uuid();
 			headers.requestid = _app.uuid();
 		}
-		var token = getTokenForAuth(parameters.sessionToken, parameters.password, parameters.authMethod);
+		var token = getTokenForAuth(parameters.applicationKey, parameters.password, parameters.authMethod);
 		headers.timestamp = token.timestamp;
 		headers.authorization = token.method + " " + token.value;
 		headers.fingerprint = parameters.fingerprint;
