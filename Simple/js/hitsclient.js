@@ -304,13 +304,10 @@ var hitsclient = (function(_app) {
 		var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
 		$("#server").val(currentServer + "/SIF3InfraREST/hits/");
 		$("#solutionid").val("HITS");
-		if ($.cookie) {
-			var id = $.cookie("hits2.id");
-			var dbid = $.cookie("hits2.dbid");
-			if (!id || !dbid) {
-				finishSetup(false);
-			} else {
-			    $.get(currentServer + "/api/account/" + id + "/database/" + dbid).success(function(data) {
+		var id = getId();
+		var dbid = getDbId();
+		if (id && dbid) {
+			$.get(currentServer + "/api/account/" + id + "/database/" + dbid).success(function(data) {
 				     $("#applicationkey").val(dbid);
 				     $("#usertoken").val(dbid);
 				     $("#password").val(dbid);
@@ -319,14 +316,29 @@ var hitsclient = (function(_app) {
 				     $("#environment").val(data.data.environment);
 				     finishSetup(true);
 			    }).error(function() { finishSetup(false); });
-			}
 		} else {
 			finishSetup(false);
 		}
 	};
 
+	var getId = function() {
+		var id = $.url().param('id');
+		if (!id && $.cookie) {
+			id = $.cookie("hits2.id");
+		}
+		return id;
+	}
+
+	var getDbId = function() {
+		var dbid = $.url().param('dbid');
+		if (!dbid && $.cookie) {
+			dbid = $.cookie("hits2.dbid");
+		}
+		return dbid;
+	}
+
 	var compatibileSetup = function() {
-		// TODO : Remove, No Need for this anymore.
+		// TODO : Remove, No Need for this anymore?
 		// Load School REF ID - Backwards compatibile
 		var school_id = $.url().param('school_id');
 		if (school_id) {
