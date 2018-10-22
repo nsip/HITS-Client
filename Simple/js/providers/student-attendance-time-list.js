@@ -6,7 +6,7 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name : "Student Attendance Time List",
     value : "StudentAttendanceTimeLists",
-    servicePaths : ["StudentPersonals/{}/StudentAttendanceTimeLists"],
+    servicePaths : ["StudentPersonals/{}/StudentAttendanceTimeLists","SchoolInfos/{}/StudentAttendanceTimeLists","SchoolInfos/{}/StudentPersonals/{}/StudentAttendanceTimeLists"],
     template : "" +
           "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
           "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +

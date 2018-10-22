@@ -31,6 +31,8 @@ $baseURL = "http://hitstest.dev.nsip.edu.au";
 {BASEURL}/SIF3InfraREST/hits/requests/TeachingGroups/{TEACHINGGROUP}/StudentPersonals?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 {BASEURL}/SIF3InfraREST/hits/requests/TimeTableSubjects/{TIMETABLESUBJECT}/TeachingGroups?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 {BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceSummarys?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentAttendanceTimeLists?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
+{BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceTimeLists?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 {BASEURL}/SIF3InfraREST/hits/requests/StudentPersonals/{STUDENTPERSONAL}/StudentAttendanceTimeLists?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 {BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/FinancialAccounts?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
 {BASEURL}/SIF3InfraREST/hits/requests/SchoolInfos/{SCHOOLINFO}/VendorInfos?navigationPage=1&navigationPageSize=5&access_token={TOKEN}&authenticationMethod=Basic
