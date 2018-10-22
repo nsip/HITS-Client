@@ -23,6 +23,12 @@ var hitsclient = (function(_app) {
 		}
 		args.data = _app.environment.getDetailed(parameters.solutionId, parameters.applicationKey, parameters.userToken, parameters.authMethod);
 		var data = {};
+		args.statusCode = {
+			409 : function(xhr, status, error) {
+				processEnvironment(xhr.responseText, data);
+				callback.call(this, data);
+			}
+		};
 		if (args.headers) {
 			$.ajax(args).success(function(result, status, xhr) { 
 				processEnvironment(xhr.responseText, data);
