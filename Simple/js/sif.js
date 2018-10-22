@@ -21,7 +21,7 @@ var hitsclient = (function(_app) {
 			type : methods.POST,
 			datatype : "XML",
 		}
-		args.data = _app.environment.getDetailed(parameters.solutionId, parameters.applicationKey, parameters.userToken);
+		args.data = _app.environment.getDetailed(parameters.solutionId, parameters.applicationKey, parameters.userToken, parameters.authMethod);
 		var data = {};
 		if (args.headers) {
 			$.ajax(args).success(function(result, status, xhr) { 

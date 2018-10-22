@@ -177,7 +177,9 @@ var hitsclient = (function(_app) {
 	}
 
 	var executeCall = function() {
-		if (validateEnvironment() && validateProvider() && validateMethod()) {
+		if (!validateEnvironment()) {
+			createEnvironment();
+		} else if (validateEnvironment() && validateProvider() && validateMethod()) {
 			var provider = $("#provider option:selected").data("provider");
 			var servicePath = $("#servicePath option:selected").data("service-path");
 			var method = $("#method option:selected").data("method");
@@ -261,7 +263,9 @@ var hitsclient = (function(_app) {
 
 	var determineServerUrl = function(servers) {
 		var protocol = window.location.protocol;
-		if (protocol === "file:") protocol = "https:";
+		if (protocol === "file:") {
+			return "http://" + servers[servers.length -1];
+		} 
 		var server = false;
 		for (var i = 0; !server && i < servers.length; i++) {
 			if (window.location.href.indexOf(servers[i]) > -1) {
@@ -425,6 +429,7 @@ var hitsclient = (function(_app) {
 	var getParameters = function(provider) {
 		var result = {};
 		$("form input").each(function(i, f) { result[$(f).attr("name")] = $(f).val(); });
+		$("form #authmethod").each(function(i, f) { result["authMethod"] = $(f).val(); });
 		var payload = $("form textarea[name=payload]").val();
 		if (payload) {
 			result.payload = payload;

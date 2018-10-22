@@ -3,7 +3,7 @@ var hitsclient = (function(_app) {
   var template =
       "<environment xmlns=\"http://www.sifassociation.org/infrastructure/3.2.1\">\n" +
       "  <solutionId>${SOLUTION_ID}</solutionId>\n" +
-      "  <authenticationMethod>Basic</authenticationMethod>\n" +
+      "  <authenticationMethod>${AUTH_METHOD}</authenticationMethod>\n" +
       "  <userToken>${USER_TOKEN}</userToken>\n" +
       "  <consumerName>TestConsumer</consumerName>\n" +
       "  <applicationInfo>\n" +
@@ -24,11 +24,12 @@ var hitsclient = (function(_app) {
     name : "Environment",
     value : "Environment",
     template : template,
-    getDetailed : function(solutionId, applicationKey, userToken) {
+    getDetailed : function(solutionId, applicationKey, userToken, authMethod) {
       var populatedTemplate = hitsclient.environment.template;
       populatedTemplate = populatedTemplate.replace("${SOLUTION_ID}", solutionId);
       populatedTemplate = populatedTemplate.replace("${APPLICATION_KEY}", applicationKey);
       populatedTemplate = populatedTemplate.replace("${USER_TOKEN}", userToken);
+      populatedTemplate = populatedTemplate.replace("${AUTH_METHOD}", authMethod);
       return populatedTemplate;
     }
   };
