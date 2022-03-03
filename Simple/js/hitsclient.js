@@ -303,7 +303,7 @@ var hitsclient = (function(_app) {
 
 	var setup = function() {
 		var productionServer = "hits.nsip.edu.au";
-		var preProdServer = "hitstest.dev.nsip.edu.au";
+		var preProdServer = "hits.test.nsip.edu.au";
 		var devServer = "localhost:8181";
 		var currentServer = determineServerUrl([ productionServer, preProdServer, devServer ]);
 		$("#server").val(currentServer + "/SIF3InfraREST/hits/");
