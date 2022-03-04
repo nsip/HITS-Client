@@ -24,7 +24,7 @@ var hitsclient = (function(_app) {
 "      <!-- AGEID -->\n" +
 "      <EntityName>XXX Secondary College</EntityName>\n" +
 "      <EntityContact>\n" +
-"        <Name Type="LGL">\n" +
+"        <Name Type=\"LGL\">\n" +
 "          <FamilyName>Citizen</FamilyName>\n" +
 "          <!-- Collection Contact Family Name -->\n" +
 "          <GivenName>John</GivenName>\n" +
@@ -32,9 +32,9 @@ var hitsclient = (function(_app) {
 "        </Name>\n" +
 "        <PositionTitle>Auditor</PositionTitle>\n" +
 "        <!-- Collection Contact Position -->\n" +
-"        <Email Type="01">jcitizen@school.vic.edu.au</Email>\n" +
+"        <Email Type=\"01\">jcitizen@school.vic.edu.au</Email>\n" +
 "        <!-- Collection Contact EmailAddress -->\n" +
-"        <PhoneNumber Type="0096">\n" +
+"        <PhoneNumber Type=\"0096\">\n" +
 "          <Number>03 1234-2678</Number>\n" +
 "        </PhoneNumber>\n" +
 "        <!-- Collection Contact Phone Number-->\n" +
@@ -55,7 +55,7 @@ var hitsclient = (function(_app) {
 "          <EducationLevel>Primary</EducationLevel>\n" +
 "          <BoardingStatus>D</BoardingStatus>\n" +
 "          <ReportingParent2>Y</ReportingParent2>\n" +
-"          <StudentAddress Type="0123" Role="012B">\n" +
+"          <StudentAddress Type=\"0123\" Role=\"012B\">\n" +
 "            <Street>\n" +
 "              <Line1>The House</Line1>\n" +
 "              <Line2>2921 Warburton Hwy</Line2>\n" +
@@ -65,7 +65,7 @@ var hitsclient = (function(_app) {
 "            <PostalCode>60611</PostalCode>\n" +
 "          </StudentAddress>\n" +
 "          <Parent1>\n" +
-"            <ParentName Type="LGL">\n" +
+"            <ParentName Type=\"LGL\">\n" +
 "              <FamilyName>Miller</FamilyName>\n" +
 "              <!-- Collection Parent Family Name -->\n" +
 "              <GivenName>James</GivenName>\n" +
@@ -74,7 +74,7 @@ var hitsclient = (function(_app) {
 "              <!-- Collection Parent Preferred First Name -->\n" +
 "            </ParentName>\n" +
 "            <AddressSameAsStudent>Y</AddressSameAsStudent>\n" +
-"            <ParentAddress Type="0123" Role="012B">\n" +
+"            <ParentAddress Type=\"0123\" Role=\"012B\">\n" +
 "              <Street>\n" +
 "                <Line1>The House</Line1>\n" +
 "                <Line2>2921 Warburton Hwy</Line2>\n" +
@@ -85,7 +85,7 @@ var hitsclient = (function(_app) {
 "            </ParentAddress>\n" +
 "          </Parent1>\n" +
 "          <Parent2>\n" +
-"            <ParentName Type="LGL">\n" +
+"            <ParentName Type=\"LGL\">\n" +
 "              <FamilyName>Miller</FamilyName>\n" +
 "              <!-- Collection Parent Family Name -->\n" +
 "              <GivenName>Samantha</GivenName>\n" +
@@ -94,7 +94,7 @@ var hitsclient = (function(_app) {
 "              <!-- Collection Parent Preferred First Name -->\n" +
 "            </ParentName>\n" +
 "            <AddressSameAsStudent>Y</AddressSameAsStudent>\n" +
-"            <ParentAddress Type="0123" Role="012B">\n" +
+"            <ParentAddress Type=\"0123\" Role=\"012B\">\n" +
 "              <Street>\n" +
 "                <Line1>The House</Line1>\n" +
 "                <Line2>2921 Warburton Hwy</Line2>\n" +

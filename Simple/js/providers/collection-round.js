@@ -6,10 +6,9 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name: "CollectionRound",
     value: "CollectionRounds",
-    template: 
-      "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
+    template: "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-    "<CollectionRound RefId="{RefId}">\n" +
+    "<CollectionRound RefId=\"{RefId}\">\n" +
 "  <AGCollection>STATS</AGCollection>\n" +
 "  <CollectionYear>2018</CollectionYear>\n" +
 "  <AGRoundList>\n" +

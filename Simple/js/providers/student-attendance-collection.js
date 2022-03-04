@@ -9,7 +9,7 @@ var hitsclient = (function(_app) {
     template: 
       "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-    "<StudentAttendanceCollection RefId="{RefId}">\n" +
+    "<StudentAttendanceCollection RefId=\"{RefId}\">\n" +
 "  <StudentAttendanceCollectionYear>2020</StudentAttendanceCollectionYear>\n" +
 "  <!-- Data Year -->\n" +
 "  <RoundCode>Semester1</RoundCode>\n" +
@@ -24,7 +24,7 @@ var hitsclient = (function(_app) {
 "      <!-- AGEID -->\n" +
 "      <EntityName>XXX Secondary College</EntityName>\n" +
 "      <EntityContact>\n" +
-"        <Name Type="LGL">\n" +
+"        <Name Type=\"LGL\">\n" +
 "          <FamilyName>Citizen</FamilyName>\n" +
 "          <!-- Collection Contact Family Name -->\n" +
 "          <GivenName>John</GivenName>\n" +
@@ -32,9 +32,9 @@ var hitsclient = (function(_app) {
 "        </Name>\n" +
 "        <PositionTitle>BusinessManager</PositionTitle>\n" +
 "        <!-- Collection Contact Position -->\n" +
-"        <Email Type="01">jcitizen@school.vic.edu.au</Email>\n" +
+"        <Email Type=\"01\">jcitizen@school.vic.edu.au</Email>\n" +
 "        <!-- Collection Contact EmailAddress -->\n" +
-"        <PhoneNumber Type="0096">\n" +
+"        <PhoneNumber Type=\"0096\">\n" +
 "          <Number>03 1234-5678</Number>\n" +
 "        </PhoneNumber>\n" +
 "        <!-- Collection Contact Phone Number-->\n" +

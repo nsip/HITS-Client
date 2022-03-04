@@ -6,10 +6,9 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name: "FinancialQuestionnaireCollection",
     value: "FinancialQuestionnaireCollections",
-    template: 
-      "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
+    template: "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-"<FinancialQuestionnaireCollection RefId="{RefId}}">\n" +
+"<FinancialQuestionnaireCollection RefId=\"{RefId}}\">\n" +
 "  <FQYear>2018</FQYear>\n" +
 "  <!-- Data Year -->\n" +
 "  <RoundCode>FQ1</RoundCode>\n" +
@@ -24,7 +23,7 @@ var hitsclient = (function(_app) {
 "      <!-- AGEID -->\n" +
 "      <EntityName>XXX Secondary College</EntityName>\n" +
 "      <EntityContact>\n" +
-"        <Name Type="LGL">\n" +
+"        <Name Type=\"LGL\">\n" +
 "          <FamilyName>Citizen</FamilyName>\n" +
 "          <!-- Collection Contact Family Name -->\n" +
 "          <GivenName>John</GivenName>\n" +
@@ -32,9 +31,9 @@ var hitsclient = (function(_app) {
 "        </Name>\n" +
 "        <PositionTitle>Auditor</PositionTitle>\n" +
 "        <!-- Collection Contact Position -->\n" +
-"        <Email Type="01">jcitizen@school.vic.edu.au</Email>\n" +
+"        <Email Type=\"01\">jcitizen@school.vic.edu.au</Email>\n" +
 "        <!-- Collection Contact EmailAddress -->\n" +
-"        <PhoneNumber Type="0096">\n" +
+"        <PhoneNumber Type=\"0096\">\n" +
 "          <Number>03 1234-5678</Number>\n" +
 "        </PhoneNumber>\n" +
 "        <!-- Collection Contact Phone Number -->\n" +
@@ -83,13 +82,13 @@ var hitsclient = (function(_app) {
 "      <CommonwealthId>12387</CommonwealthId>\n" +
 "      <EntityName>ABCXYZ Secondary College</EntityName>\n" +
 "      <EntityContact>\n" +
-"        <Name Type="LGL">\n" +
+"        <Name Type=\"LGL\">\n" +
 "          <FamilyName>Citizen</FamilyName>\n" +
 "          <GivenName>John</GivenName>\n" +
 "        </Name>\n" +
 "        <PositionTitle>Auditor</PositionTitle>\n" +
-"        <Email Type="01">jcitizen@school.vic.edu.au</Email>\n" +
-"        <PhoneNumber Type="0096">\n" +
+"        <Email Type=\"01\">jcitizen@school.vic.edu.au</Email>\n" +
+"        <PhoneNumber Type=\"0096\">\n" +
 "          <Number>03 1234-5678</Number>\n" +
 "        </PhoneNumber>\n" +
 "      </EntityContact>\n" +
@@ -137,13 +136,13 @@ var hitsclient = (function(_app) {
 "      <CommonwealthId>12388</CommonwealthId>\n" +
 "      <EntityName>Ballarat Diocese</EntityName>\n" +
 "      <EntityContact>\n" +
-"        <Name Type="LGL">\n" +
+"        <Name Type=\"LGL\">\n" +
 "          <FamilyName>Citizen</FamilyName>\n" +
 "          <GivenName>John</GivenName>\n" +
 "        </Name>\n" +
 "        <PositionTitle>Auditor</PositionTitle>\n" +
-"        <Email Type="01">jcitizeb@school.vic.edu.au</Email>\n" +
-"        <PhoneNumber Type="0096">\n" +
+"        <Email Type=\"01\">jcitizeb@school.vic.edu.au</Email>\n" +
+"        <PhoneNumber Type=\"0096\">\n" +
 "          <Number>03 1234-5678</Number>\n" +
 "        </PhoneNumber>\n" +
 "      </EntityContact>\n" +

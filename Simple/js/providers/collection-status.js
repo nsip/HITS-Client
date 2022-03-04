@@ -6,10 +6,9 @@ var hitsclient = (function(_app) {
   _app.providers.push({
     name: "CollectionStatus",
     value: "CollectionStatuss",
-    template: 
-      "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
+    template: "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
-    "<CollectionStatus RefId="{RefId}}">\n" +
+    "<CollectionStatus RefId=\"{RefId}}\">\n" +
 "  <ReportingAuthority>Ballarat Diocese</ReportingAuthority>\n" +
 "  <ReportingAuthoritySystem>Vic Catholic</ReportingAuthoritySystem>\n" +
 "  <ReportingAuthorityCommonwealthId>012345</ReportingAuthorityCommonwealthId>\n" +
