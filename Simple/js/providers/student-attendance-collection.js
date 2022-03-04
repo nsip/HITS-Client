@@ -4,7 +4,7 @@ var hitsclient = (function(_app) {
   }
 
   _app.providers.push({
-    name: "StudentAttendanceCollection",
+    name: "Student Attendance Collection",
     value: "StudentAttendanceCollections",
     template: 
       "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +

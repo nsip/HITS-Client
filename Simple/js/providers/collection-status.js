@@ -4,7 +4,7 @@ var hitsclient = (function(_app) {
   }
 
   _app.providers.push({
-    name: "CollectionStatus",
+    name: "Collection Status",
     value: "CollectionStatuss",
     template: "<!-- Remember to insert RefIds of records that exist; and to hyphenate RefID as\n" +
       "     xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->\n" +
